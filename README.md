@@ -1,50 +1,71 @@
-﻿# AI Company Workflow
+# AI Company Workflow
 
-## 椤圭洰涓€鍙ヨ瘽
-鎵撻€犱竴涓敱鍒涗笟鑰呭畾涔夌洰鏍囥€佺敱澶氭櫤鑳戒綋鎸夊矖浣嶅崗浣滄墽琛岀殑 AI 缁勭粐宸ヤ綔娴佺郴缁燂紱褰撳墠绗竴闃舵鍏堢敤**鐮斿彂鍥㈤槦鐗?*楠岃瘉杩欏鏂规硶鏄惁鐪熻兘璺戦€氥€?
-## 褰撳墠瀹氫綅
-杩欎笉鏄€滃彧鍋氱爺鍙戝洟闃熲€濈殑鍥哄畾浜у搧锛岃€屾槸涓€涓彲鎵╁睍鐨?AI 鍏徃宸ヤ綔娴佹鏋躲€?褰撳墠鍏堟嬁**鐮斿彂鍥㈤槦鐗?*鍋氱涓€闃舵楠岃瘉锛屽悗缁繕浼氱户缁皾璇曪細
-- AI 鐭墽鑷姩鍖栫敓鎴?- 鑷獟浣撹繍钀?- 鍐呭宸ヤ綔瀹?- 鍏朵粬鍙祦绋嬪寲鐨勪笟鍔″洟闃?
-## 褰撳墠鐩爣
-鍏堥獙璇佽繖浠朵簨鍦ㄧ爺鍙戝洟闃熷満鏅笅鏄惁鍏峰鐪熷疄瀹炵敤浠峰€硷紝骞舵矇娣€绗竴鐗堝彲杩愯鐨勶細
-- 瑙掕壊浣撶郴
-- 浠诲姟娴佽浆鏂规
-- 瀹℃壒涓庡仠鏈鸿鍒?- 浜ゆ帴妯℃澘
-- 鏂囨。瀵艰埅涓庢墽琛岄『搴?- 浜у搧瀹炴柦绾︽潫涓庢ā鏉夸紭鍏堝師鍒?- 鍙┍鍔?Codex 鍒嗛樁娈佃惤鍦板綋鍓嶉」鐩墠鍚庣鍔熻兘鐨勫疄鏂芥枃妗?
-## 鐮斿彂鍥㈤槦鐗堣瑙ｅ喅浠€涔堥棶棰?- 鍒涗笟鑰?鎶€鏈礋璐ｄ汉绮惧姏鏈夐檺锛岄渶姹傚垎鏋愩€佷换鍔℃媶瑙ｃ€佸紑鍙戞帹杩涖€佹祴璇曢獙璇侀兘闈犺嚜宸辩洴锛屾垚鏈珮
-- 鍗曚釜 AI 鍙兘瀹屾垚鐐圭姸缂栫爜鎴栭棶绛旓紝缂哄皯瀹屾暣鐮斿彂鍗忎綔閾捐矾
-- 鐮斿彂宸ヤ綔涓嶆槸鈥滃啓涓€娈典唬鐮佲€濊繖涔堢畝鍗曪紝鑰屾槸闇€姹傘€佽璁°€佸紑鍙戙€佹祴璇曘€侀獙鏀躲€佸彂甯冭鏄庣殑涓€鏁存潯娴佺▼
-- 鐜版湁鑷姩鍖栧伐鍏峰彲浠ヨ繛鎺ョ郴缁燂紝浣嗕笉鑳藉ぉ鐒舵壙鎷呭矖浣嶈亴璐ｃ€佷氦鎺ヨ矗浠诲拰瀹℃牳鏈哄埗
+## 项目一句话
+打造一个由创业者定义目标、由多智能体按岗位协作执行的 AI 组织工作流系统；当前第一阶段先用**研发团队版**验证这套方法是否真能跑通。
 
-## 绗竴闃舵杈圭晫
-鏈」鐩涓€闃舵涓嶈拷姹傗€滃畬鍏ㄨ嚜娌荤爺鍙戝叕鍙糕€濓紝鑰屾槸鍏堝仛锛?- 瑙掕壊鍖栫爺鍙戞櫤鑳戒綋璁捐
-- 鐮斿彂浠诲姟鐘舵€佹祦杞?- 宀椾綅鍗忎綔涓庝氦浠樻満鍒?- 瀹℃壒涓庝汉宸ュ厹搴?- 妯℃澘鍖栧惎鍔ㄤ綋楠?- 鏂囨。鍖栨矇娣€锛屾柟渚垮悗缁骇鍝佸寲涓庡琛屼笟鎵╁睍
-- 褰撳墠椤圭洰鑷韩鐨勫墠鍚庣瀹炴柦钃濆浘
+## 当前定位
+这不是“只做研发团队”的固定产品，而是一个可扩展的 AI 公司工作流框架。
+当前先拿**研发团队版**做第一阶段验证，后续还会继续尝试：
+- AI 短剧自动化生成
+- 自媒体运营
+- 内容工作室
+- 其他可流程化的业务团队
 
-## 绗竴闃舵褰撳墠宸插叿澶囩殑楠ㄦ灦
-鐩墠鏂囨。宸茬粡瑕嗙洊锛?- 椤圭洰杈圭晫涓庢墽琛岀‖瑙勫垯锛歚README.md`銆乣AGENTS.md`
-- 浠诲姟缁撴瀯锛歚governance/task-schema.md`
-- 鍐崇瓥闂細`governance/decision-gates.md`
-- 缂洪櫡涓ラ噸搴?/ 浼樺厛绾ц鍒欙細`governance/severity-priority-rules.md`
-- 浜ゆ帴妯℃澘锛歚governance/handoff-templates.md`
-- 鎬讳綋宸ヤ綔娴侊細`workflows/workflow.md`
-- 鎵ц椤哄簭锛歚governance/execution-order.md`
-- 鍥炲綊妫€鏌ワ細`governance/regression-checklist.md`
-- 浜や粯鍓嶆敹鍙ｆ鏌ワ細`governance/ready-for-delivery-checklist.md`
-- 瑙掕壊鎵ц鎵嬪唽锛歚roles/playbooks/*.md`
-- 浠诲姟 SOP锛?  - `workflows/playbooks/feature-workflow.md`
+## 当前目标
+先验证这件事在研发团队场景下是否具备真实实用价值，并沉淀第一版可运行的：
+- 角色体系
+- 任务流转方案
+- 审批与停机规则
+- 交接模板
+- 文档导航与执行顺序
+- 产品实施约束与模板优先原则
+- 可驱动 Codex 分阶段落地当前项目前后端功能的实施文档
+
+## 研发团队版要解决什么问题
+- 创业者/技术负责人精力有限，需求分析、任务拆解、开发推进、测试验证都靠自己盯，成本高
+- 单个 AI 只能完成点状编码或问答，缺少完整研发协作链路
+- 研发工作不是“写一段代码”这么简单，而是需求、设计、开发、测试、验收、发布说明的一整条流程
+- 现有自动化工具可以连接系统，但不能天然承担岗位职责、交接责任和审核机制
+
+## 第一阶段边界
+本项目第一阶段不追求“完全自治研发公司”，而是先做：
+- 角色化研发智能体设计
+- 研发任务状态流转
+- 岗位协作与交付机制
+- 审批与人工兜底
+- 模板化启动体验
+- 文档化沉淀，方便后续产品化与多行业扩展
+- 当前项目自身的前后端实施蓝图
+
+## 第一阶段当前已具备的骨架
+目前文档已经覆盖：
+- 项目边界与执行硬规则：`README.md`、`AGENTS.md`
+- 任务结构：`governance/task-schema.md`
+- 决策门：`governance/decision-gates.md`
+- 缺陷严重度 / 优先级规则：`governance/severity-priority-rules.md`
+- 交接模板：`governance/handoff-templates.md`
+- 总体工作流：`workflows/workflow.md`
+- 执行顺序：`governance/execution-order.md`
+- 回归检查：`governance/regression-checklist.md`
+- 交付前收口检查：`governance/ready-for-delivery-checklist.md`
+- 角色执行手册：`roles/playbooks/*.md`
+- 任务 SOP：
+  - `workflows/playbooks/feature-workflow.md`
   - `workflows/playbooks/bugfix-workflow.md`
   - `workflows/playbooks/hotfix-workflow.md`
-- 鏍锋澘妗堜緥锛歚examples/鐮斿彂鍥㈤槦-棣栨潯闂幆绀轰緥.md`
-- 浠诲姟鏍蜂緥锛?  - `examples/tasks/feature-example.md`
+- 样板案例：`examples/研发团队-首条闭环示例.md`
+- 任务样例：
+  - `examples/tasks/feature-example.md`
   - `examples/tasks/bugfix-example.md`
   - `examples/tasks/hotfix-example.md`
-- 澶嶇洏妯℃澘锛?  - `governance/postmortem-template.md`
-- 浜у搧鍘熷垯涓庡疄鐜版枃妗ｏ細
+- 复盘模板：
+  - `governance/postmortem-template.md`
+- 产品原则与实现文档：
   - `product/product-implementation.md`
   - `product/product-principles.md`
   - `product/skill-system-design.md`
-- 褰撳墠椤圭洰瀹炴柦鏂囨。锛?  - `product/domain-model.md`
+- 当前项目实施文档：
+  - `product/domain-model.md`
   - `product/module-breakdown.md`
   - `product/implementation-roadmap.md`
   - `product/implementation-phases.md`
@@ -54,13 +75,10 @@
   - `product/api-contracts.md`
   - `product/template-instantiation-flow.md`
   - `product/role-skill-mapping.md`
-  - `product/api-contracts.md`
-  - `product/template-instantiation-flow.md`
-  - `product/role-skill-mapping.md`
-- 瀵艰埅鍦板浘锛歚docs-map.md`
+- 导航地图：`docs-map.md`
 
-## 鎺ㄨ崘闃呰椤哄簭
-### 濡傛灉浣犳槸浜猴紝绗竴娆＄湅杩欏鏂囨。
+## 推荐阅读顺序
+### 如果你是人，第一次看这套文档
 1. `README.md`
 2. `AGENTS.md`
 3. `docs-map.md`
@@ -70,21 +88,22 @@
 7. `product/module-breakdown.md`
 8. `product/implementation-roadmap.md`
 9. `product/implementation-phases.md`
-10. `product/canvas-ui-spec.md`
-11. `product/screens-and-flows.md`
-12. `product/api-contracts.md`
-13. `product/template-instantiation-flow.md`
-14. `product/role-skill-mapping.md`
+10. `product/api-contracts.md`
+11. `product/template-instantiation-flow.md`
+12. `product/role-skill-mapping.md`
+13. `product/canvas-ui-spec.md`
+14. `product/screens-and-flows.md`
 15. `roles/roles.md`
 16. `workflows/workflow.md`
-17. `examples/鐮斿彂鍥㈤槦-棣栨潯闂幆绀轰緥.md`
+17. `examples/研发团队-首条闭环示例.md`
 18. `examples/tasks/*.md`
 19. `governance/severity-priority-rules.md`
 20. `governance/regression-checklist.md`
 21. `governance/ready-for-delivery-checklist.md`
 22. `governance/postmortem-template.md`
 
-### 濡傛灉浣犳槸 Codex / 鏅鸿兘浣擄紝鍑嗗寮€濮嬫墽琛屽綋鍓嶉」鐩疄鏂?1. `AGENTS.md`
+### 如果你是 Codex / 智能体，准备开始执行当前项目实施
+1. `AGENTS.md`
 2. `product/domain-model.md`
 3. `product/module-breakdown.md`
 4. `product/implementation-roadmap.md`
@@ -98,18 +117,28 @@
 12. `product/product-implementation.md`
 13. `governance/task-schema.md`
 14. `governance/decision-gates.md`
-15. 杩涘叆褰撳墠闃舵鍏蜂綋瀹炵幇
+15. 进入当前阶段具体实现
 
-## 褰撳墠闃舵缁撹
-- **鐮斿彂鍥㈤槦鐗堝彧鏄涓€涓獙璇佹柟鍚戯紝涓嶆槸鏈€缁堝敮涓€鏂瑰悜**
-- 褰撳墠閲嶇偣涓嶆槸鍋氬嚭鈥滃緢鑱槑鐨勪唬鐞嗏€濓紝鑰屾槸鍋氬嚭**鑳戒氦鎺ャ€佽兘鍋滄満銆佽兘闂幆**鐨勬墽琛屼綋绯?- 鍚屾椂寮€濮嬫槑纭骇鍝佸疄鐜拌竟鐣岋細妯℃澘浼樺厛銆佹渶灏忓惎鍔ㄤ紭鍏堛€佸弻绔彲鐢ㄣ€佺敾甯冨彲鎿嶄綔
-- 褰撳墠杩樿繘涓€姝ヨˉ榻愪簡鈥滃浣曡 Codex 鎸夐樁娈靛疄鐜板綋鍓嶉」鐩墠鍚庣鍔熻兘鈥濈殑瀹炴柦鏂囨。灞?- 妯℃澘鍚姩銆丄PI 瀵归綈銆佽鑹?鎶€鑳芥寕杞戒篃宸茬粡琛ュ埌鍙柦宸ュ眰
-- 涓€鏃﹁繖濂楁柟娉曡鍦ㄧ爺鍙戝満鏅窇椤猴紝鍐嶅鍒跺埌鍐呭銆佽嚜濯掍綋銆丄I 鐭墽绛夊満鏅?
-## 浠嶇劧瀛樺湪鐨勭己鍙?铏界劧楠ㄦ灦宸查綈锛屼絾绂烩€滅湡姝ｄ骇鍝佸寲鈥濊繕宸嚑鍧楋細
-- 鏇村 bugfix / hotfix 鍙樹綋浠诲姟鏍蜂緥
-- `task-schema` 鐨?JSON Schema 鍖?- 澶氬満鏅鐢ㄦ椂鐨勫瓧娈佃鍓瓥鐣?- 鏇村畬鏁寸殑瑙掕壊妯℃澘 / workflow 妯℃澘鍟嗗搧鍖栫粍缁囨柟寮?- 鍓嶇鐘舵€佹ā鍨嬩笌鎺ュ彛閿欒鐮佺殑杩涗竴姝ョ粏鍖?
-## 涓嬩竴姝ュ缓璁?鎸変紭鍏堢骇寤鸿缁х画琛ワ細
-1. 澧炶ˉ鏇村 `examples/tasks/` 鍙樹綋鏍蜂緥
-2. 鎶婁换鍔″崟杩涗竴姝ョ粨鏋勫寲鎴愬彲鐩存帴琚郴缁熸秷璐圭殑 schema
-3. 缁嗗寲鍓嶇鐘舵€佹ā鍨嬩笌鎺ュ彛閿欒鐮?4. 姊崇悊澶氬満鏅鐢ㄦ椂鐨勫瓧娈佃鍓笌妯℃澘灞傜骇
-5. 寮€濮嬫妸鈥滅涓€涓蒋浠跺叕鍙告ā鏉库€濆寘瑁呮垚鏈€灏忓惎鍔ㄦā鏉?
+## 当前阶段结论
+- **研发团队版只是第一个验证方向，不是最终唯一方向**
+- 当前重点不是做出“很聪明的代理”，而是做出**能交接、能停机、能闭环**的执行体系
+- 同时开始明确产品实现边界：模板优先、最小启动优先、双端可用、画布可操作
+- 当前还进一步补齐了“如何让 Codex 按阶段实现当前项目前后端功能”的实施文档层
+- 模板启动、API 对齐、角色-技能挂载也已经补到可施工层
+- 一旦这套方法论在研发场景跑顺，再复制到内容、自媒体、AI 短剧等场景
+
+## 仍然存在的缺口
+虽然骨架已齐，但离“真正产品化”还差几块：
+- 更多 bugfix / hotfix 变体任务样例
+- `task-schema` 的 JSON Schema 化
+- 多场景复用时的字段裁剪策略
+- 更完整的角色模板 / workflow 模板商品化组织方式
+- 前端状态模型与接口错误码的进一步细化
+
+## 下一步建议
+按优先级建议继续补：
+1. 增补更多 `examples/tasks/` 变体样例
+2. 把任务单进一步结构化成可直接被系统消费的 schema
+3. 细化前端状态模型与接口错误码
+4. 梳理多场景复用时的字段裁剪与模板层级
+5. 开始把“第一个软件公司模板”包装成最小启动模板
