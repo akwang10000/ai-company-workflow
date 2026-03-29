@@ -23,6 +23,7 @@
 - 工作流画布展示与操作
 - 基础任务样例与最小启动模板
 - 技能模块的模板化挂载与启停
+- 当前项目自身的实施蓝图文档
 
 不在第一阶段强求：
 - 全行业模板市场
@@ -112,6 +113,11 @@
 - 默认模板应能直接落在画布里，而不是只存在文档说明中
 - 技能信息优先放在节点详情层展示，不把主画布做炸
 
+### 进一步规格
+画布的具体布局与交互方式，继续参考：
+- `product/canvas-ui-spec.md`
+- `product/screens-and-flows.md`
+
 ---
 
 ## 模板驱动实施要求
@@ -151,6 +157,27 @@
 
 ---
 
+## 当前项目实施文档建议配套阅读
+如果目标是让 Codex 依据文档逐步实现当前项目前后端功能，建议配套阅读：
+- `product/domain-model.md`
+- `product/module-breakdown.md`
+- `product/implementation-roadmap.md`
+- `product/implementation-phases.md`
+- `product/codex-delivery-rules.md`
+- `product/canvas-ui-spec.md`
+- `product/screens-and-flows.md`
+
+这些文档解决的分别是：
+- 对象怎么建模
+- 模块怎么拆
+- 整体先后顺序
+- 每个 phase 做什么
+- Codex 每轮怎么交付
+- 画布怎么做
+- 页面怎么串起来
+
+---
+
 ## 第一阶段完成后的理想效果
 如果第一阶段实现到位，用户应能：
 - 直接选择一个软件公司最小启动模板
@@ -170,8 +197,12 @@
 4. 做模板启动流程：先让用户不从空白开始
 5. 再逐步补 LLM 辅助创建能力
 
+更细的实施顺序继续参考：
+- `product/implementation-roadmap.md`
+- `product/implementation-phases.md`
+
 ---
 
 ## 一句话原则
 第一阶段不是做“最强配置系统”，而是做一套：
-**后端稳、前端双端可用、模板可直接启动、画布好理解、技能可控且不炸界面、普通用户也能上手的 AI 团队工作流产品。**
+**后端稳、前端双端可用、模板可直接启动、画布好理解、技能可控且不炸界面、普通用户也能上手，并且 Codex 能按阶段持续施工的 AI 团队工作流产品。**

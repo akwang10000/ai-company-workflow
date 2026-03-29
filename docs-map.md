@@ -41,6 +41,41 @@
 - 什么时候看：设计技能层、模板能力组合、界面复杂度控制时
 - 主要回答：技能模块该不该有、如何做成“内核复杂、界面克制”
 
+#### `product/domain-model.md`
+- 用途：定义当前项目第一阶段的核心领域模型
+- 什么时候看：建后端实体、前端状态、模板实例化关系时
+- 主要回答：系统里有哪些核心对象，它们之间怎么关联
+
+#### `product/module-breakdown.md`
+- 用途：定义当前项目的前后端模块拆分
+- 什么时候看：规划实现顺序、决定先做哪个模块时
+- 主要回答：系统该拆成哪些模块，优先级怎么排
+
+#### `product/implementation-roadmap.md`
+- 用途：定义当前项目的总体实施路线图
+- 什么时候看：做阶段规划、判断先后顺序时
+- 主要回答：整个项目先做什么、后做什么
+
+#### `product/implementation-phases.md`
+- 用途：把路线图细化成 Codex 可分阶段推进的实施阶段
+- 什么时候看：准备进入某个 phase 开工时
+- 主要回答：当前阶段该交付什么、什么算做完
+
+#### `product/codex-delivery-rules.md`
+- 用途：定义 Codex 在当前项目实施中的交付规则
+- 什么时候看：准备让 Codex 按文档持续施工时
+- 主要回答：每轮改动怎么交付、怎么验证、什么时候能进下一阶段
+
+#### `product/canvas-ui-spec.md`
+- 用途：定义 workflow 画布的布局与交互规格
+- 什么时候看：实现画布页、讨论布局与操作方式时
+- 主要回答：画布怎么摆、怎么点、怎么展示详情
+
+#### `product/screens-and-flows.md`
+- 用途：定义第一阶段主要页面与页面流转
+- 什么时候看：做前端页面规划、PC/手机分工时
+- 主要回答：系统有哪些页面、页面之间怎么跳转
+
 ---
 
 ### 2. 任务与控制层
@@ -167,30 +202,41 @@
 2. `AGENTS.md`
 3. `product/product-principles.md`
 4. `product/product-implementation.md`
-5. `product/skill-system-design.md`
-6. `roles/roles.md`
-7. `workflows/workflow.md`
-8. `examples/研发团队-首条闭环示例.md`
-9. 按任务类型继续读对应 workflow
-10. 需要落任务时参考 `examples/tasks/*.md`
-11. 涉及 bug / incident 判断时参考 `governance/severity-priority-rules.md`
-12. 准备收口时参考 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
-13. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
+5. `product/domain-model.md`
+6. `product/module-breakdown.md`
+7. `product/implementation-roadmap.md`
+8. `product/implementation-phases.md`
+9. `product/canvas-ui-spec.md`
+10. `product/screens-and-flows.md`
+11. `product/skill-system-design.md`
+12. `roles/roles.md`
+13. `workflows/workflow.md`
+14. `examples/研发团队-首条闭环示例.md`
+15. 按任务类型继续读对应 workflow
+16. 需要落任务时参考 `examples/tasks/*.md`
+17. 涉及 bug / incident 判断时参考 `governance/severity-priority-rules.md`
+18. 准备收口时参考 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+19. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
 
 ### 对 Codex / 智能体
 1. `AGENTS.md`
-2. `governance/task-schema.md`
-3. `governance/decision-gates.md`
-4. 若为 bug / incident / hotfix，读取 `governance/severity-priority-rules.md`
-5. `governance/execution-order.md`
-6. 具体 workflow 文档
-7. 当前角色对应的 role playbook
-8. `governance/handoff-templates.md`
-9. 若需要快速起任务，可参考 `examples/tasks/*.md`
-10. 若任务进入收口阶段，读取 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
-11. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
-12. 若任务涉及产品实现边界，参考 `product/product-implementation.md`
-13. 若任务涉及技能层设计或界面参数暴露策略，参考 `product/skill-system-design.md`
+2. `product/domain-model.md`
+3. `product/module-breakdown.md`
+4. `product/implementation-roadmap.md`
+5. `product/implementation-phases.md`
+6. `product/codex-delivery-rules.md`
+7. `product/canvas-ui-spec.md`
+8. `product/screens-and-flows.md`
+9. `product/product-implementation.md`
+10. `governance/task-schema.md`
+11. `governance/decision-gates.md`
+12. 若为 bug / incident / hotfix，读取 `governance/severity-priority-rules.md`
+13. 具体 workflow 文档
+14. 当前角色对应的 role playbook
+15. `governance/handoff-templates.md`
+16. 若需要快速起任务，可参考 `examples/tasks/*.md`
+17. 若任务进入收口阶段，读取 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+18. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
 
 ---
 
@@ -199,10 +245,12 @@
 - 更多 `examples/tasks/`（接口类 bug、权限类 bug、回滚类 hotfix）
 - `task-schema` 的 JSON Schema 版本
 - 多场景复用时的字段裁剪策略
+- 模板实例化与角色-技能映射的更细文档
 - 如果后续需要把用户代理化，再考虑 `roles/playbooks/CEO-Agent-playbook.md`
 
 ---
 
 ## 一句话说明
 如果 `governance/execution-order.md` 解决的是“先干什么”，
-那 `docs-map.md` 解决的就是“这堆文档分别是干嘛的”。
+那 `docs-map.md` 解决的就是“这堆文档分别是干嘛的”；
+而新增的 product 实施文档，解决的是“当前项目本身该怎么一步步做出来”。

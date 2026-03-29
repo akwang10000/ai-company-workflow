@@ -19,6 +19,7 @@
 - 交接模板
 - 文档导航与执行顺序
 - 产品实施约束与模板优先原则
+- 可驱动 Codex 分阶段落地当前项目前后端功能的实施文档
 
 ## 研发团队版要解决什么问题
 - 创业者/技术负责人精力有限，需求分析、任务拆解、开发推进、测试验证都靠自己盯，成本高
@@ -34,6 +35,7 @@
 - 审批与人工兜底
 - 模板化启动体验
 - 文档化沉淀，方便后续产品化与多行业扩展
+- 当前项目自身的前后端实施蓝图
 
 ## 第一阶段当前已具备的骨架
 目前文档已经覆盖：
@@ -58,10 +60,18 @@
   - `examples/tasks/hotfix-example.md`
 - 复盘模板：
   - `governance/postmortem-template.md`
-- 产品文档：
+- 产品原则与实现文档：
   - `product/product-implementation.md`
   - `product/product-principles.md`
   - `product/skill-system-design.md`
+- 当前项目实施文档：
+  - `product/domain-model.md`
+  - `product/module-breakdown.md`
+  - `product/implementation-roadmap.md`
+  - `product/implementation-phases.md`
+  - `product/codex-delivery-rules.md`
+  - `product/canvas-ui-spec.md`
+  - `product/screens-and-flows.md`
 - 导航地图：`docs-map.md`
 
 ## 推荐阅读顺序
@@ -71,33 +81,40 @@
 3. `docs-map.md`
 4. `product/product-principles.md`
 5. `product/product-implementation.md`
-6. `roles/roles.md`
-7. `workflows/workflow.md`
-8. `examples/研发团队-首条闭环示例.md`
-9. `examples/tasks/*.md`
-10. `governance/severity-priority-rules.md`
-11. `governance/regression-checklist.md`
-12. `governance/ready-for-delivery-checklist.md`
-13. `governance/postmortem-template.md`
+6. `product/domain-model.md`
+7. `product/module-breakdown.md`
+8. `product/implementation-roadmap.md`
+9. `product/implementation-phases.md`
+10. `product/canvas-ui-spec.md`
+11. `product/screens-and-flows.md`
+12. `roles/roles.md`
+13. `workflows/workflow.md`
+14. `examples/研发团队-首条闭环示例.md`
+15. `examples/tasks/*.md`
+16. `governance/severity-priority-rules.md`
+17. `governance/regression-checklist.md`
+18. `governance/ready-for-delivery-checklist.md`
+19. `governance/postmortem-template.md`
 
-### 如果你是 Codex / 智能体，准备开始执行任务
+### 如果你是 Codex / 智能体，准备开始执行当前项目实施
 1. `AGENTS.md`
-2. `governance/task-schema.md`
-3. `governance/decision-gates.md`
-4. 若是 bug / incident / hotfix，先读 `governance/severity-priority-rules.md`
-5. 进入对应 `workflows/playbooks/*.md`
-6. 进入当前角色对应的 `roles/playbooks/*.md`
-7. 交接时参考 `governance/handoff-templates.md`
-8. 起任务时参考 `examples/tasks/*.md`
-9. 收口前参考 `governance/regression-checklist.md`
-10. 进入 `Ready for Delivery` 前参考 `governance/ready-for-delivery-checklist.md`
-11. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
-12. 涉及产品实现边界时参考 `product/product-implementation.md`
+2. `product/domain-model.md`
+3. `product/module-breakdown.md`
+4. `product/implementation-roadmap.md`
+5. `product/implementation-phases.md`
+6. `product/codex-delivery-rules.md`
+7. `product/canvas-ui-spec.md`
+8. `product/screens-and-flows.md`
+9. `product/product-implementation.md`
+10. `governance/task-schema.md`
+11. `governance/decision-gates.md`
+12. 进入当前阶段具体实现
 
 ## 当前阶段结论
 - **研发团队版只是第一个验证方向，不是最终唯一方向**
 - 当前重点不是做出“很聪明的代理”，而是做出**能交接、能停机、能闭环**的执行体系
 - 同时开始明确产品实现边界：模板优先、最小启动优先、双端可用、画布可操作
+- 当前还进一步补齐了“如何让 Codex 按阶段实现当前项目前后端功能”的实施文档层
 - 一旦这套方法论在研发场景跑顺，再复制到内容、自媒体、AI 短剧等场景
 
 ## 仍然存在的缺口
@@ -106,6 +123,7 @@
 - `task-schema` 的 JSON Schema 化
 - 多场景复用时的字段裁剪策略
 - 更完整的角色模板 / workflow 模板商品化组织方式
+- 模板实例化与默认技能挂载的进一步细化文档
 
 ## 下一步建议
 按优先级建议继续补：
@@ -113,3 +131,4 @@
 2. 把任务单进一步结构化成可直接被系统消费的 schema
 3. 梳理多场景复用时的字段裁剪与模板层级
 4. 开始把“第一个软件公司模板”包装成最小启动模板
+5. 细化模板实例化与角色-技能映射文档
