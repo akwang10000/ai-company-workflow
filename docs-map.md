@@ -101,6 +101,11 @@
 - 什么时候看：实现任务状态流转、审核收口、Waiting Decision 与 Ready for Delivery 规则时
 - 主要回答：哪些状态能跳、哪些不能跳、什么时候必须生成 decision / handoff / review / delivery summary
 
+#### `product/task-transition-api-and-actions.md`
+- 用途：把状态守卫翻译成 transition API、动作按钮和后端状态机实现规则
+- 什么时候看：开始设计任务流转接口、前端动作模型、后端 guard validator 时
+- 主要回答：动作怎么定义、API 怎么收、前后端分别怎么落状态机
+
 ---
 
 ### 2. 任务与控制层

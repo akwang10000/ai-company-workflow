@@ -1,4 +1,4 @@
-# product/product-implementation.md
+﻿# product/product-implementation.md
 
 ## 目标
 定义 AI Company Workflow 第一阶段（研发团队版）的产品实施约束，确保后续原型、后端、前端和交互设计沿同一条实现路径推进，而不是各写各的。
@@ -186,6 +186,7 @@
 - 角色与技能怎么挂载
 - 最小启动模板到底包含什么
 - 任务状态机和收口守卫怎么定义
+- transition API 和动作层怎么实现
 
 ---
 

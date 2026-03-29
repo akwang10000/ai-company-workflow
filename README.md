@@ -1,4 +1,4 @@
-# AI Company Workflow
+﻿# AI Company Workflow
 
 ## 项目一句话
 打造一个由创业者定义目标、由多智能体按岗位协作执行的 AI 组织工作流系统；当前第一阶段先用**研发团队版**验证这套方法是否真能跑通。
@@ -77,6 +77,7 @@
   - `product/role-skill-mapping.md`
   - `product/minimum-software-company-template.md`
   - `product/task-status-guards.md`
+  - `product/task-transition-api-and-actions.md`
 - 导航地图：`docs-map.md`
 
 ## 推荐阅读顺序
@@ -95,16 +96,17 @@
 12. `product/role-skill-mapping.md`
 13. `product/minimum-software-company-template.md`
 14. `product/task-status-guards.md`
-15. `product/canvas-ui-spec.md`
-16. `product/screens-and-flows.md`
-17. `roles/roles.md`
-18. `workflows/workflow.md`
-19. `examples/研发团队-首条闭环示例.md`
-20. `examples/tasks/*.md`
-21. `governance/severity-priority-rules.md`
-22. `governance/regression-checklist.md`
-23. `governance/ready-for-delivery-checklist.md`
-24. `governance/postmortem-template.md`
+15. `product/task-transition-api-and-actions.md`
+16. `product/canvas-ui-spec.md`
+17. `product/screens-and-flows.md`
+18. `roles/roles.md`
+19. `workflows/workflow.md`
+20. `examples/研发团队-首条闭环示例.md`
+21. `examples/tasks/*.md`
+22. `governance/severity-priority-rules.md`
+23. `governance/regression-checklist.md`
+24. `governance/ready-for-delivery-checklist.md`
+25. `governance/postmortem-template.md`
 
 ### 如果你是 Codex / 智能体，准备开始执行当前项目实施
 1. `AGENTS.md`
@@ -118,12 +120,13 @@
 9. `product/role-skill-mapping.md`
 10. `product/minimum-software-company-template.md`
 11. `product/task-status-guards.md`
-12. `product/canvas-ui-spec.md`
-13. `product/screens-and-flows.md`
-14. `product/product-implementation.md`
-15. `governance/task-schema.md`
-16. `governance/decision-gates.md`
-17. 进入当前阶段具体实现
+12. `product/task-transition-api-and-actions.md`
+13. `product/canvas-ui-spec.md`
+14. `product/screens-and-flows.md`
+15. `product/product-implementation.md`
+16. `governance/task-schema.md`
+17. `governance/decision-gates.md`
+18. 进入当前阶段具体实现
 
 ## 当前阶段结论
 - **研发团队版只是第一个验证方向，不是最终唯一方向**
