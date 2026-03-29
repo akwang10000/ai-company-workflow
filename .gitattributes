@@ -1,0 +1,21 @@
+# Minimal repository-wide text/binary rules
+
+# Normalize all text files to LF in the repo.
+* text=auto eol=lf
+
+# Keep common binary assets untouched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.zip binary
+*.7z binary
+*.gz binary
+*.mp4 binary
+*.mov binary
+*.avi binary
+*.mp3 binary
+*.wav binary
+*.ico binary
