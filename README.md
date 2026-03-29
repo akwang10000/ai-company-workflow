@@ -72,6 +72,9 @@
   - `product/codex-delivery-rules.md`
   - `product/canvas-ui-spec.md`
   - `product/screens-and-flows.md`
+  - `product/api-contracts.md`
+  - `product/template-instantiation-flow.md`
+  - `product/role-skill-mapping.md`
 - 导航地图：`docs-map.md`
 
 ## 推荐阅读顺序
@@ -87,14 +90,17 @@
 9. `product/implementation-phases.md`
 10. `product/canvas-ui-spec.md`
 11. `product/screens-and-flows.md`
-12. `roles/roles.md`
-13. `workflows/workflow.md`
-14. `examples/研发团队-首条闭环示例.md`
-15. `examples/tasks/*.md`
-16. `governance/severity-priority-rules.md`
-17. `governance/regression-checklist.md`
-18. `governance/ready-for-delivery-checklist.md`
-19. `governance/postmortem-template.md`
+12. `product/api-contracts.md`
+13. `product/template-instantiation-flow.md`
+14. `product/role-skill-mapping.md`
+15. `roles/roles.md`
+16. `workflows/workflow.md`
+17. `examples/研发团队-首条闭环示例.md`
+18. `examples/tasks/*.md`
+19. `governance/severity-priority-rules.md`
+20. `governance/regression-checklist.md`
+21. `governance/ready-for-delivery-checklist.md`
+22. `governance/postmortem-template.md`
 
 ### 如果你是 Codex / 智能体，准备开始执行当前项目实施
 1. `AGENTS.md`
@@ -103,18 +109,22 @@
 4. `product/implementation-roadmap.md`
 5. `product/implementation-phases.md`
 6. `product/codex-delivery-rules.md`
-7. `product/canvas-ui-spec.md`
-8. `product/screens-and-flows.md`
-9. `product/product-implementation.md`
-10. `governance/task-schema.md`
-11. `governance/decision-gates.md`
-12. 进入当前阶段具体实现
+7. `product/api-contracts.md`
+8. `product/template-instantiation-flow.md`
+9. `product/role-skill-mapping.md`
+10. `product/canvas-ui-spec.md`
+11. `product/screens-and-flows.md`
+12. `product/product-implementation.md`
+13. `governance/task-schema.md`
+14. `governance/decision-gates.md`
+15. 进入当前阶段具体实现
 
 ## 当前阶段结论
 - **研发团队版只是第一个验证方向，不是最终唯一方向**
 - 当前重点不是做出“很聪明的代理”，而是做出**能交接、能停机、能闭环**的执行体系
 - 同时开始明确产品实现边界：模板优先、最小启动优先、双端可用、画布可操作
 - 当前还进一步补齐了“如何让 Codex 按阶段实现当前项目前后端功能”的实施文档层
+- 模板启动、API 对齐、角色-技能挂载也已经补到可施工层
 - 一旦这套方法论在研发场景跑顺，再复制到内容、自媒体、AI 短剧等场景
 
 ## 仍然存在的缺口
@@ -123,12 +133,12 @@
 - `task-schema` 的 JSON Schema 化
 - 多场景复用时的字段裁剪策略
 - 更完整的角色模板 / workflow 模板商品化组织方式
-- 模板实例化与默认技能挂载的进一步细化文档
+- 前端状态模型与接口错误码的进一步细化
 
 ## 下一步建议
 按优先级建议继续补：
 1. 增补更多 `examples/tasks/` 变体样例
 2. 把任务单进一步结构化成可直接被系统消费的 schema
-3. 梳理多场景复用时的字段裁剪与模板层级
-4. 开始把“第一个软件公司模板”包装成最小启动模板
-5. 细化模板实例化与角色-技能映射文档
+3. 细化前端状态模型与接口错误码
+4. 梳理多场景复用时的字段裁剪与模板层级
+5. 开始把“第一个软件公司模板”包装成最小启动模板

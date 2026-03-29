@@ -76,6 +76,21 @@
 - 什么时候看：做前端页面规划、PC/手机分工时
 - 主要回答：系统有哪些页面、页面之间怎么跳转
 
+#### `product/api-contracts.md`
+- 用途：定义第一阶段前后端接口契约
+- 什么时候看：实现后端接口、联调前后端时
+- 主要回答：接口该怎么分组、返回什么结构、主链路如何对齐
+
+#### `product/template-instantiation-flow.md`
+- 用途：定义模板如何实例化成一个可运行 workspace
+- 什么时候看：实现“从模板启动”流程时
+- 主要回答：用户点下启动后，系统生成什么、如何进入第一条任务
+
+#### `product/role-skill-mapping.md`
+- 用途：定义角色与默认技能包的映射关系
+- 什么时候看：实现角色默认能力包、节点技能展示时
+- 主要回答：每个角色默认带哪些技能，workflow 节点显示哪些能力
+
 ---
 
 ### 2. 任务与控制层
@@ -206,17 +221,20 @@
 6. `product/module-breakdown.md`
 7. `product/implementation-roadmap.md`
 8. `product/implementation-phases.md`
-9. `product/canvas-ui-spec.md`
-10. `product/screens-and-flows.md`
-11. `product/skill-system-design.md`
-12. `roles/roles.md`
-13. `workflows/workflow.md`
-14. `examples/研发团队-首条闭环示例.md`
-15. 按任务类型继续读对应 workflow
-16. 需要落任务时参考 `examples/tasks/*.md`
-17. 涉及 bug / incident 判断时参考 `governance/severity-priority-rules.md`
-18. 准备收口时参考 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
-19. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
+9. `product/api-contracts.md`
+10. `product/template-instantiation-flow.md`
+11. `product/role-skill-mapping.md`
+12. `product/canvas-ui-spec.md`
+13. `product/screens-and-flows.md`
+14. `product/skill-system-design.md`
+15. `roles/roles.md`
+16. `workflows/workflow.md`
+17. `examples/研发团队-首条闭环示例.md`
+18. 按任务类型继续读对应 workflow
+19. 需要落任务时参考 `examples/tasks/*.md`
+20. 涉及 bug / incident 判断时参考 `governance/severity-priority-rules.md`
+21. 准备收口时参考 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+22. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
 
 ### 对 Codex / 智能体
 1. `AGENTS.md`
@@ -225,18 +243,21 @@
 4. `product/implementation-roadmap.md`
 5. `product/implementation-phases.md`
 6. `product/codex-delivery-rules.md`
-7. `product/canvas-ui-spec.md`
-8. `product/screens-and-flows.md`
-9. `product/product-implementation.md`
-10. `governance/task-schema.md`
-11. `governance/decision-gates.md`
-12. 若为 bug / incident / hotfix，读取 `governance/severity-priority-rules.md`
-13. 具体 workflow 文档
-14. 当前角色对应的 role playbook
-15. `governance/handoff-templates.md`
-16. 若需要快速起任务，可参考 `examples/tasks/*.md`
-17. 若任务进入收口阶段，读取 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
-18. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
+7. `product/api-contracts.md`
+8. `product/template-instantiation-flow.md`
+9. `product/role-skill-mapping.md`
+10. `product/canvas-ui-spec.md`
+11. `product/screens-and-flows.md`
+12. `product/product-implementation.md`
+13. `governance/task-schema.md`
+14. `governance/decision-gates.md`
+15. 若为 bug / incident / hotfix，读取 `governance/severity-priority-rules.md`
+16. 具体 workflow 文档
+17. 当前角色对应的 role playbook
+18. `governance/handoff-templates.md`
+19. 若需要快速起任务，可参考 `examples/tasks/*.md`
+20. 若任务进入收口阶段，读取 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+21. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
 
 ---
 
@@ -245,7 +266,7 @@
 - 更多 `examples/tasks/`（接口类 bug、权限类 bug、回滚类 hotfix）
 - `task-schema` 的 JSON Schema 版本
 - 多场景复用时的字段裁剪策略
-- 模板实例化与角色-技能映射的更细文档
+- 前端状态模型与接口错误码的更细文档
 - 如果后续需要把用户代理化，再考虑 `roles/playbooks/CEO-Agent-playbook.md`
 
 ---
