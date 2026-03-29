@@ -54,6 +54,21 @@
 - 什么时候看：遇到不确定、高风险、需拍板问题时
 - 主要回答：什么时候必须停下来等人决策
 
+#### `governance/severity-priority-rules.md`
+- 用途：定义 bug / incident / hotfix 的严重度与优先级口径
+- 什么时候看：判断问题到底多严重、是否要插队、是否要升级 hotfix 时
+- 主要回答：Severity 怎么判、Priority 怎么判、什么时候该走 hotfix
+
+#### `governance/regression-checklist.md`
+- 用途：定义变更后的最小回归检查清单
+- 什么时候看：bugfix / hotfix / 高风险 feature 准备收口时
+- 主要回答：这次改动至少该回归到什么程度、哪些必须记录
+
+#### `governance/ready-for-delivery-checklist.md`
+- 用途：定义进入 `Ready for Delivery` 前的最小收口要求
+- 什么时候看：准备把任务交给用户 / CEO / Approver 做最终确认时
+- 主要回答：什么条件下才算真正具备可交付性
+
 #### `governance/handoff-templates.md`
 - 用途：定义角色之间的标准交接格式
 - 什么时候看：任何角色切换时
@@ -158,29 +173,32 @@
 8. `examples/研发团队-首条闭环示例.md`
 9. 按任务类型继续读对应 workflow
 10. 需要落任务时参考 `examples/tasks/*.md`
-11. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
+11. 涉及 bug / incident 判断时参考 `governance/severity-priority-rules.md`
+12. 准备收口时参考 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+13. hotfix / 复杂 bug 收口时参考 `governance/postmortem-template.md`
 
 ### 对 Codex / 智能体
 1. `AGENTS.md`
 2. `governance/task-schema.md`
 3. `governance/decision-gates.md`
-4. `governance/execution-order.md`
-5. 具体 workflow 文档
-6. 当前角色对应的 role playbook
-7. `governance/handoff-templates.md`
-8. 若需要快速起任务，可参考 `examples/tasks/*.md`
-9. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
-10. 若任务涉及产品实现边界，参考 `product/product-implementation.md`
-11. 若任务涉及技能层设计或界面参数暴露策略，参考 `product/skill-system-design.md`
+4. 若为 bug / incident / hotfix，读取 `governance/severity-priority-rules.md`
+5. `governance/execution-order.md`
+6. 具体 workflow 文档
+7. 当前角色对应的 role playbook
+8. `governance/handoff-templates.md`
+9. 若需要快速起任务，可参考 `examples/tasks/*.md`
+10. 若任务进入收口阶段，读取 `governance/regression-checklist.md` 与 `governance/ready-for-delivery-checklist.md`
+11. 若任务需要事故复盘或复杂收口，参考 `governance/postmortem-template.md`
+12. 若任务涉及产品实现边界，参考 `product/product-implementation.md`
+13. 若任务涉及技能层设计或界面参数暴露策略，参考 `product/skill-system-design.md`
 
 ---
 
 ## 当前缺口
 还建议后续继续补：
-- 缺陷优先级 / 事故分级规则
-- 回归验证模板
-- Ready for Delivery 检查清单
 - 更多 `examples/tasks/`（接口类 bug、权限类 bug、回滚类 hotfix）
+- `task-schema` 的 JSON Schema 版本
+- 多场景复用时的字段裁剪策略
 - 如果后续需要把用户代理化，再考虑 `roles/playbooks/CEO-Agent-playbook.md`
 
 ---
