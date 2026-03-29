@@ -1,4 +1,4 @@
-# docs-map.md
+﻿# docs-map.md
 
 ## 目标
 为本项目现有文档提供一张总览地图，方便人和 Codex 快速定位：
@@ -90,6 +90,16 @@
 - 用途：定义角色、技能包、workflow 节点之间的映射
 - 什么时候看：实现角色与技能页、节点详情技能展示时
 - 主要回答：哪个角色默认带哪些技能、哪个节点展示哪些技能
+
+#### `product/minimum-software-company-template.md`
+- 用途：定义第一个软件公司模板的最小启动骨架
+- 什么时候看：设计默认模板内容、判断启动后系统应交付什么时
+- 主要回答：模板本体到底包含哪些角色、workflow、任务样例、技能包和首页骨架
+
+#### `product/task-status-guards.md`
+- 用途：定义统一任务状态机、合法流转和关键留痕规则
+- 什么时候看：实现任务状态流转、审核收口、Waiting Decision 与 Ready for Delivery 规则时
+- 主要回答：哪些状态能跳、哪些不能跳、什么时候必须生成 decision / handoff / review / delivery summary
 
 ---
 

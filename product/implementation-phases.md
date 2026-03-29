@@ -1,4 +1,4 @@
-# product/implementation-phases.md
+﻿# product/implementation-phases.md
 
 ## 目标
 把当前项目的实施路线图进一步细化成可执行阶段，让 Codex 可以按阶段施工，而不是一次性铺太大。
@@ -21,11 +21,14 @@
 - `product/codex-delivery-rules.md`
 - `product/canvas-ui-spec.md`
 - `product/screens-and-flows.md`
+- `product/minimum-software-company-template.md`
+- `product/task-status-guards.md`
 
 ### 完成标准
 - 项目实现顺序明确
 - 画布和前后端边界明确
 - Codex 可以基于文档开始正式施工
+- 最小启动模板与状态守卫规则明确
 
 ---
 

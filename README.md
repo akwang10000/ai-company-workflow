@@ -75,6 +75,8 @@
   - `product/api-contracts.md`
   - `product/template-instantiation-flow.md`
   - `product/role-skill-mapping.md`
+  - `product/minimum-software-company-template.md`
+  - `product/task-status-guards.md`
 - 导航地图：`docs-map.md`
 
 ## 推荐阅读顺序
@@ -91,16 +93,18 @@
 10. `product/api-contracts.md`
 11. `product/template-instantiation-flow.md`
 12. `product/role-skill-mapping.md`
-13. `product/canvas-ui-spec.md`
-14. `product/screens-and-flows.md`
-15. `roles/roles.md`
-16. `workflows/workflow.md`
-17. `examples/研发团队-首条闭环示例.md`
-18. `examples/tasks/*.md`
-19. `governance/severity-priority-rules.md`
-20. `governance/regression-checklist.md`
-21. `governance/ready-for-delivery-checklist.md`
-22. `governance/postmortem-template.md`
+13. `product/minimum-software-company-template.md`
+14. `product/task-status-guards.md`
+15. `product/canvas-ui-spec.md`
+16. `product/screens-and-flows.md`
+17. `roles/roles.md`
+18. `workflows/workflow.md`
+19. `examples/研发团队-首条闭环示例.md`
+20. `examples/tasks/*.md`
+21. `governance/severity-priority-rules.md`
+22. `governance/regression-checklist.md`
+23. `governance/ready-for-delivery-checklist.md`
+24. `governance/postmortem-template.md`
 
 ### 如果你是 Codex / 智能体，准备开始执行当前项目实施
 1. `AGENTS.md`
@@ -112,12 +116,14 @@
 7. `product/api-contracts.md`
 8. `product/template-instantiation-flow.md`
 9. `product/role-skill-mapping.md`
-10. `product/canvas-ui-spec.md`
-11. `product/screens-and-flows.md`
-12. `product/product-implementation.md`
-13. `governance/task-schema.md`
-14. `governance/decision-gates.md`
-15. 进入当前阶段具体实现
+10. `product/minimum-software-company-template.md`
+11. `product/task-status-guards.md`
+12. `product/canvas-ui-spec.md`
+13. `product/screens-and-flows.md`
+14. `product/product-implementation.md`
+15. `governance/task-schema.md`
+16. `governance/decision-gates.md`
+17. 进入当前阶段具体实现
 
 ## 当前阶段结论
 - **研发团队版只是第一个验证方向，不是最终唯一方向**
