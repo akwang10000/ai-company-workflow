@@ -1,115 +1,94 @@
-﻿# product/task-status-guards.md
+# product/task-status-guards.md
 
 ## 目标
-定义第一阶段任务状态机与状态守卫规则，确保 feature / bugfix / hotfix 三类任务在系统里不是“随便改状态”，而是按统一约束推进。
+
+定义第一阶段任务状态机与状态守卫规则，确保 `feature` / `bugfix` / `hotfix` 三类任务在系统里不是“随便改状态”，而是按统一约束推进。
 
 这份文档主要回答：
+
 - 系统里有哪些核心状态
 - 哪些状态之间允许流转，哪些不允许
-- 什么时候必须生成 decision / handoff / review / delivery summary 记录
+- 什么时候必须生成 `decision` / `handoff` / `review` / `delivery summary` 记录
 - 什么时候必须停在 `Waiting Decision`
 - 什么时候才允许进入 `Ready for Delivery` 与 `Done`
+- handoff 与 review 的默认顺序是什么
+- 哪些规则属于状态机原则，哪些细节交给 transition 文档
 
 ---
 
-## 适用范围
-本规则适用于第一阶段所有任务运行态，至少覆盖：
-- `feature`
-- `bugfix`
-- `hotfix`
+## 核心原则
 
-第一阶段允许不同任务类型在流程细节上略有差异，但不允许脱离统一状态守卫体系各跑各的。
-
----
-
-## 设计原则
-
-### 1. 状态必须可解释
-每个状态都要回答清楚：
-- 当前任务在做什么
-- 当前由谁接手
-- 下一步要满足什么条件才能往下走
-
-### 2. 状态流转必须可追溯
-关键流转不只改一个字段，还要能追到是谁、基于什么信息、把任务推进到了哪里。
-
-### 3. 停机优先于误推进
-遇到重大不确定性、范围争议、高风险动作、缺少拍板时，优先进入 `Waiting Decision`，而不是硬推进。
-
-### 4. 收口必须有门槛
-不是“代码改了”就能 Done，必须先满足 review、回归、摘要、交付等条件。
+- 状态推进必须由 action 驱动，不允许裸改状态
+- 状态是业务结果，不是用户可随便下拉选择的字段
+- guard 的目标不是“卡流程”，而是防止跳过必要记录与责任转移
+- Phase 1 先收紧，不先追求最大自由度
+- **任务 owner 变化默认由 transition 驱动，不由普通字段更新驱动**
+- **`Waiting Decision` 是阻塞态；存在未决 decision 时，不得继续普通推进**
+- **`In Review` 不是一个抽象标签，而是一个有 reviewer、有 review record 的真实阶段**
 
 ---
 
-## 核心状态定义
-第一阶段建议统一采用以下核心状态：
+## 状态总表（Phase 1）
 
-### 1. Draft
-任务刚创建，信息还不完整，尚未进入正式执行。
-
-### 2. Ready
-任务信息已达到最小执行要求，等待进入正式流转。
-
-### 3. In Progress
-当前有明确负责人正在处理该任务。
-
-### 4. Waiting Handoff
-当前执行人已完成本阶段输出，等待交接给下一个角色。
-
-### 5. Waiting Decision
-任务因关键问题、争议、风险、授权缺失或方向待拍板而暂停，等待人类或指定 approver 决策。
-
-### 6. In Review
-任务已进入审核、验收、回归验证或技术复核环节。
-
-### 7. Rework Required
-审核未通过，需要返工。
-
-### 8. Ready for Delivery
-任务已满足最小交付条件，等待最终确认、发布、展示或归档前收口。
-
-### 9. Done
-任务已完成且收口结束。
-
-### 10. Archived
-任务已归档，不再作为活跃任务参与流转。
-
-### 11. Cancelled
-任务被明确取消，不再继续推进。
+- `Draft`
+- `Ready`
+- `In Progress`
+- `Waiting Handoff`
+- `Waiting Decision`
+- `In Review`
+- `Rework Required`
+- `Ready for Delivery`
+- `Done`
+- `Cancelled`
+- `Archived`
 
 ---
 
-## 合法状态流转表
+## 默认允许的主流转路径
 
-| From | To | 是否允许 | 说明 |
-|---|---|---|---|
-| Draft | Ready | 允许 | 基础字段补齐后进入可执行态 |
-| Draft | Cancelled | 允许 | 明确放弃该任务 |
-| Ready | In Progress | 允许 | 指定负责人后开始执行 |
-| Ready | Waiting Decision | 允许 | 开工前即存在方向/资源/权限问题 |
-| In Progress | Waiting Handoff | 允许 | 当前阶段产出已完成，等待交接 |
-| In Progress | In Review | 允许 | 当前阶段完成后直接进入审核 |
-| In Progress | Waiting Decision | 允许 | 执行中遇到必须拍板问题 |
-| In Progress | Cancelled | 条件允许 | 明确终止任务时 |
-| Waiting Handoff | In Progress | 允许 | 下一责任人接手成功 |
-| Waiting Handoff | Waiting Decision | 允许 | 交接中发现需拍板问题 |
-| Waiting Handoff | Cancelled | 条件允许 | 任务被终止 |
-| Waiting Decision | Ready | 允许 | 决策后回到待执行 |
-| Waiting Decision | In Progress | 允许 | 决策后直接继续执行 |
-| Waiting Decision | Cancelled | 允许 | 决策结果为终止 |
-| In Review | Rework Required | 允许 | 审核未通过 |
-| In Review | Ready for Delivery | 允许 | 审核通过且满足收口条件 |
-| In Review | Waiting Decision | 允许 | 审核中遇到拍板问题 |
-| Rework Required | In Progress | 允许 | 返工开始 |
-| Rework Required | Waiting Decision | 允许 | 返工方向需拍板 |
-| Ready for Delivery | Done | 允许 | 交付完成或最终确认完成 |
-| Ready for Delivery | In Progress | 条件允许 | 收口前发现问题重新打开 |
-| Ready for Delivery | Waiting Decision | 允许 | 最终确认阶段仍需拍板 |
-| Done | Archived | 允许 | 完成后归档 |
+### 主路径
+
+- `Draft -> Ready`
+- `Ready -> In Progress`
+- `In Progress -> Waiting Handoff`
+- `Waiting Handoff -> In Progress`
+- `In Progress -> In Review`
+- `In Review -> Rework Required`
+- `Rework Required -> In Progress`
+- `In Review -> Ready for Delivery`
+- `Ready for Delivery -> Done`
+- `Done -> Archived`
+
+### 拍板分叉
+
+以下状态在满足条件时都允许进入 `Waiting Decision`：
+
+- `Ready`
+- `In Progress`
+- `Waiting Handoff`
+- `In Review`
+- `Rework Required`
+- `Ready for Delivery`
+
+`Waiting Decision` 允许根据已解决 decision 进入：
+
+- `Ready`
+- `In Progress`
+- `Cancelled`
+
+### 其他受控分叉
+
+- `Ready for Delivery -> In Progress`（显式 reopen）
+- `Draft -> Cancelled`
+- `Ready -> Cancelled`
+- `In Progress -> Cancelled`
+- `Waiting Handoff -> Cancelled`
+- `Waiting Decision -> Cancelled`
 
 ---
 
 ## 非法跳转规则
+
 以下跳转第一阶段默认视为非法，除非后续文档明确扩展：
 
 - `Draft -> Done`
@@ -122,309 +101,372 @@
 - `Archived -> 任何活跃状态`
 
 解释：
+
 - 不允许绕过执行、审核、收口直接宣告完成
 - 不允许取消或归档后的任务悄悄复活
 - 如果确实需要恢复，应新建任务或由系统支持显式 reopen 机制，而不是直接偷改状态
 
 ---
 
+## handoff 与 review 的默认顺序（Phase 1）
+
+这是 Phase 1 必须收死的一条规则。
+
+### 默认规则
+
+当开发角色把任务交给审核角色时，默认顺序是：
+
+1. `submit_handoff`
+2. `accept_handoff`
+3. 任务重新回到 `In Progress`，但 owner 已变为审核侧
+4. 审核侧再执行 `start_review`
+5. 任务进入 `In Review`
+
+### 为什么这样定
+
+这样可以把三件事拆清：
+
+- 责任转移：由 `HandoffRecord` 表达
+- 审核开始：由 `ReviewRecord` 表达
+- 审核结论：由 review 结果表达
+
+### 允许直接 `In Progress -> In Review` 的唯一前提
+
+若当前 `TaskInstance.current_owner` 已经是 review-capable 角色，即：
+
+- `qa_review_agent`
+- `tech_lead_agent`
+
+则允许直接执行 `start_review`。
+
+### 明确禁止
+
+以下情况默认不允许：
+
+- `dev_agent` 在仍持有 owner 时直接把任务送入正式 `In Review`
+- 用 `start_review` 同时隐式完成 owner 迁移
+- 跳过 `accept_handoff` 就把 reviewer 视为已正式接手
+
+---
+
 ## 每个状态的进入条件与退出条件
 
 ### Draft
-进入条件：
+
+#### 进入条件
+
 - 任务被创建但未补齐最小字段
 
-退出条件：
-- 任务标题、背景、目标、范围、验收标准、任务类型等最小字段已补齐，转 `Ready`
+#### 退出条件
+
+- 标题、目标、范围、验收标准、任务类型等最小字段已补齐，转 `Ready`
 - 或明确放弃，转 `Cancelled`
 
+---
+
 ### Ready
-进入条件：
+
+#### 进入条件
+
 - 基础字段完整
 - 任务类型明确
 - 有可执行范围
 
-退出条件：
-- 指派负责人并开始执行，转 `In Progress`
+#### 退出条件
+
+- 计划负责人明确并开始执行，转 `In Progress`
 - 若有关键争议，转 `Waiting Decision`
+- 若任务终止，转 `Cancelled`
+
+---
 
 ### In Progress
-进入条件：
-- 当前任务已有明确 owner
+
+#### 进入条件
+
+- 当前任务已有明确 `current_owner`
 - 当前阶段开始处理
 
-退出条件：
-- 当前阶段产出完成，进入 `Waiting Handoff` 或 `In Review`
+#### 退出条件
+
+- 当前阶段产出完成并提交给下一角色，转 `Waiting Handoff`
+- 当前 owner 已是审核侧且正式开始审核，转 `In Review`
 - 若遇到关键拍板问题，转 `Waiting Decision`
 - 若任务终止，转 `Cancelled`
 
+---
+
 ### Waiting Handoff
-进入条件：
+
+#### 进入条件
+
 - 当前负责人已提交阶段产出
+- 已生成有效 `HandoffRecord`
 - 下一责任人尚未明确接收或尚未开始
 
-退出条件：
+#### 退出条件
+
 - 下一责任人明确接手，转 `In Progress`
 - 若交接中暴露拍板问题，转 `Waiting Decision`
+- 若任务终止，转 `Cancelled`
+
+---
 
 ### Waiting Decision
-进入条件：
+
+#### 进入条件
+
 - 缺少必要拍板
 - 范围存在争议
 - 存在高风险操作
 - 缺少关键资源 / 权限 / 外部确认
 - 是否继续、如何继续不能由当前角色单独判断
+- 已生成 active `DecisionRecord`
 
-退出条件：
-- 已有明确决策记录
-- 根据决策内容回到 `Ready`、`In Progress` 或 `Cancelled`
+#### 退出条件
+
+- active `DecisionRecord` 已被 resolve
+- 再通过显式 transition 恢复到 `Ready`、`In Progress` 或 `Cancelled`
+
+#### 明确说明
+
+仅仅 `DecisionRecord` 被 approve / reject，**不会自动让任务离开** `Waiting Decision`。
+
+---
 
 ### In Review
-进入条件：
-- 实现、修复或方案输出已提交审核
-- 当前阶段需要 review / QA / 回归验证
 
-退出条件：
+#### 进入条件
+
+- 当前 owner 已经是审核侧
+- 已提交审核开始动作
+- 已生成 `ReviewRecord(review_status=started, result=pending)`
+
+#### 退出条件
+
 - 审核不通过，转 `Rework Required`
 - 审核通过且收口条件满足，转 `Ready for Delivery`
 - 审核中发现拍板问题，转 `Waiting Decision`
 
+---
+
 ### Rework Required
-进入条件：
+
+#### 进入条件
+
 - 审核或回归明确未通过
 - 已输出返工意见
+- 已生成 `ReviewRecord(result=rejected)`
 
-退出条件：
+#### 退出条件
+
 - 返工开始，转 `In Progress`
 - 返工方向仍不明确，转 `Waiting Decision`
 
+---
+
 ### Ready for Delivery
-进入条件：
+
+#### 进入条件
+
 - 审核通过
+- 已存在最新一条有效 `ReviewRecord(result=passed)`
 - 关键交付物齐全
-- 收口摘要已准备
+- 已生成有效 `DeliverySummaryRecord`
 - 适用的回归检查已完成
 
-退出条件：
-- 完成交付确认，转 `Done`
-- 若发现问题重新打开，转 `In Progress`
-- 若最终确认仍需拍板，转 `Waiting Decision`
+#### 退出条件
+
+- 正式完成交付，转 `Done`
+- 交付前重新打开，转 `In Progress`
+- 发现仍需拍板事项，转 `Waiting Decision`
+
+---
 
 ### Done
-进入条件：
-- 已完成交付或最终确认
-- 任务对外输出已闭环
-- 必要留痕已完成
 
-退出条件：
-- 仅允许转 `Archived`
+#### 进入条件
 
-### Archived
-进入条件：
-- Done 任务完成归档
-- 不再参与活跃工作流
+- 任务已完成交付
+- 当前阶段已收口
 
-退出条件：
-- 第一阶段不支持直接退出
+#### 退出条件
+
+- 进入归档，转 `Archived`
+
+---
 
 ### Cancelled
-进入条件：
-- 任务明确停止
-- 决策结果为取消或无需继续
 
-退出条件：
-- 第一阶段不支持直接恢复
+#### 进入条件
+
+- 任务被明确取消
+- 当前阶段不再继续
+
+#### 退出条件
+
+- Phase 1 默认无普通退出路径
 
 ---
 
-## 必填记录规则
-关键状态流转不能只改状态，以下记录为第一阶段必填：
+### Archived
 
-### 1. handoff record 必填场景
-以下场景进入 `Waiting Handoff` 时必须生成 `HandoffRecord`：
-- PM -> Tech Lead
-- Tech Lead -> Dev
-- Dev -> QA / Review
-- QA / Review -> Ops / Release
-- 任意角色把任务明确移交给下一角色
+#### 进入条件
 
-最少字段建议包含：
-- fromRole
-- toRole
-- handoffSummary
-- deliveredArtifacts
-- risksOrNotes
-- createdAt
+- `Done` 任务被归档
+- 不再参与活跃看板与主操作面
 
-### 2. decision record 必填场景
-以下场景进入 `Waiting Decision` 时必须生成 `DecisionRecord`：
-- 范围有争议
-- 要做高风险改动
-- 需要额外资源 / 权限
-- 是否延期、降级、砍范围需要拍板
-- hotfix 是否直接上线需要拍板
+#### 退出条件
+
+- Phase 1 默认无普通退出路径
+
+---
+
+## 记录必填场景
+
+### 1. decision record 必填场景
+
+以下场景必须生成 `DecisionRecord`：
+
+- `request_decision`
 
 最少字段建议包含：
-- decisionTopic
-- decisionQuestion
-- options
-- recommendedOption
-- riskSummary
-- requestedBy
-- requestedAt
-- decisionResult（决策后补齐）
+
+- `decisionTopic`
+- `decisionQuestion`
+- `options`
+- `recommendedOption`
+- `riskSummary`
+- `approverRoleKey`
+
+---
+
+### 2. handoff record 必填场景
+
+以下场景必须生成 `HandoffRecord`：
+
+- `submit_handoff`
+
+最少字段建议包含：
+
+- `fromRole`
+- `toRole`
+- `handoffSummary`
+- `deliveredArtifacts`
+
+---
 
 ### 3. review record 必填场景
-以下场景进入 `In Review` 或从 `In Review` 退出时必须生成 `ReviewRecord`：
-- QA / Review 开始验收
-- 技术评审开始
-- 审核通过
-- 审核驳回并要求返工
+
+以下场景必须生成 `ReviewRecord`：
+
+- `start_review`
+- `reject_to_rework`
+- `mark_ready_for_delivery`
+
+#### 最少字段建议
+
+- `reviewer`
+- `reviewType`
+- `reviewStatus`
+- `result`
+- `checklistSummary`
+- `issuesFound`
+- `nextAction`
+- `reviewedAt`
+
+#### 统一约束
+
+- `start_review` 必须生成 `ReviewRecord(review_status=started, result=pending)`
+- `reject_to_rework` 必须生成或落地一条 `ReviewRecord(result=rejected)`
+- `mark_ready_for_delivery` 必须带出审核通过结论，生成或落地一条 `ReviewRecord(result=passed)`
+
+---
+
+### 4. delivery summary record 必填场景
+
+以下场景必须生成 `DeliverySummaryRecord`：
+
+- `mark_ready_for_delivery`
 
 最少字段建议包含：
-- reviewer
-- reviewType
-- checklistSummary
-- result
-- issuesFound
-- nextAction
-- reviewedAt
 
-### 4. delivery summary 必填场景
-以下场景进入 `Ready for Delivery` 时必须生成交付摘要：
-- feature 即将交付
-- bugfix 完成回归即将对外确认
-- hotfix 止血完成即将收口
-
-最少字段建议包含：
-- changeSummary
-- affectedScope
-- validationSummary
-- remainingRisks
-- releaseNotesLink 或摘要文本
-- preparedBy
-- preparedAt
+- `changeSummary`
+- `affectedScope`
+- `validationSummary`
+- `remainingRisks`
 
 ---
 
-## Waiting Decision 触发条件
-以下任一条件成立时，系统应支持或建议进入 `Waiting Decision`：
-- 任务目标或范围无法继续明确
-- 存在多个方案且取舍影响较大
-- 涉及数据库结构、接口兼容、权限、线上风险等高影响修改
-- 验收标准被推翻或显著变化
-- 当前角色没有权限继续推进
-- hotfix 是否回滚 / 是否绕过常规流程需要拍板
-- 返工次数已超阈值，需要确认是否继续投入
+## 状态阻塞规则
 
-原则：
-**拿不准且影响大的，不硬冲，先停机等拍板。**
+### 1. 未决 decision 阻塞
 
----
+若存在 active 且未 resolve 的 `DecisionRecord`，默认不允许：
 
-## Ready for Delivery 进入条件
-任务只有满足以下条件，才允许进入 `Ready for Delivery`：
-- 当前实现或修复已完成
-- 适用的 review / QA / regression 已完成
-- 若发生过返工，返工项已关闭或明确接受残留风险
-- 当前状态、负责人、关键输出物完整可追溯
-- 已生成 delivery summary
-- 不再缺少关键决策
+- `start_review`
+- `mark_ready_for_delivery`
+- `complete_delivery`
+- `restart_rework`
+- 其他继续推进的普通 action
 
-补充要求：
-- `feature` 侧重验收标准达成
-- `bugfix` 侧重缺陷复现关闭与回归范围说明
-- `hotfix` 侧重关键路径验证、风险说明、后续复盘入口
+除非动作本身就是：
+
+- `resume_after_decision`
+- `cancel_task`
 
 ---
 
-## Done / Archived 进入条件
+### 2. 缺少 handoff 阻塞
 
-### Done 进入条件
-只有满足以下条件，才允许进入 `Done`：
-- 已在 `Ready for Delivery`
-- 已完成最终确认、交付、发布或等价收口动作
-- 对外输出已准备完毕
-- 必填记录已补齐
-
-### Archived 进入条件
-只有满足以下条件，才允许进入 `Archived`：
-- 任务已是 `Done`
-- 已不需要继续跟踪活跃进展
-- 必要历史记录可被检索
+若当前想把责任从一个角色交给另一个角色，但不存在有效 `HandoffRecord`，不允许通过其他接口偷改 owner。
 
 ---
 
-## feature / bugfix / hotfix 的额外守卫差异
+### 3. 缺少 review 结论阻塞
 
-### feature
-额外关注：
-- 验收标准是否明确
-- 范围是否失控
-- 是否需要产品确认范围裁剪
-
-建议：
-- feature 进入 `Ready` 前，验收标准必须可读
-- feature 进入 `Ready for Delivery` 前，应有明确 change summary
-
-### bugfix
-额外关注：
-- 是否可复现
-- 根因是否基本明确
-- 回归范围是否说明清楚
-
-建议：
-- bugfix 进入 `In Progress` 前，至少应有问题现象和影响描述
-- bugfix 进入 `Ready for Delivery` 前，应有修复说明与回归摘要
-
-### hotfix
-额外关注：
-- 时效性与风险平衡
-- 是否允许绕过部分常规流程
-- 是否要在 Done 后补 postmortem
-
-建议：
-- hotfix 可缩短部分文书，但不能跳过关键 decision / review 留痕
-- hotfix 若有残留风险，必须在 delivery summary 中明确写出
-- hotfix 完成后应支持挂接 postmortem 任务或记录
+若任务想进入 `Ready for Delivery`，但没有最新有效 `ReviewRecord(result=passed)`，必须阻塞。
 
 ---
 
-## API / 后端约束建议
-为了让状态守卫真正落地，后端建议：
-- 不允许前端任意写入目标状态
-- 所有状态变更通过显式 transition API 或 command 完成
-- transition 时做合法性校验
-- transition 成功后自动创建对应记录或校验记录存在
-- 对非法跳转返回明确错误码与错误原因
+### 4. 缺少 delivery summary 阻塞
 
-建议接口能力至少包括：
-- `POST /tasks/{id}/transition`
-- `POST /tasks/{id}/handoffs`
-- `POST /tasks/{id}/decisions`
-- `POST /tasks/{id}/reviews`
-- `POST /tasks/{id}/delivery-summary`
+若任务想进入 `Ready for Delivery`，但没有有效 `DeliverySummaryRecord`，必须阻塞。
 
 ---
 
-## 前端约束建议
-前端不应把状态切换做成裸下拉框，而应：
-- 基于当前状态只展示可用动作
-- 对需要补充记录的流转先弹出表单
-- 对非法跳转给出明确说明
-- 在任务详情与画布节点中展示“为什么卡在这里”
+## 与 transition 文档的边界
+
+这份文档负责：
+
+- 状态枚举
+- 主允许路径
+- 非法跳转原则
+- 进入 / 退出条件
+- 哪些记录是状态推进前置条件
+
+这份文档不重复定义：
+
+- 每个 action 的 payload 结构
+- 角色权限矩阵
+- owner 如何变化
+- 错误码
+- 前端动作按钮建议
+
+以上内容统一以：
+
+- `product/task-transition-api-and-actions.md`
+
+为准。
 
 ---
 
-## Codex 实施建议
-如果 Codex 要按本文档施工，建议顺序：
-1. 先固化枚举与合法流转矩阵
-2. 再为 transition API 增加守卫校验
-3. 再补 handoff / decision / review / delivery summary 的持久化结构
-4. 再在前端把“状态变更”改成“动作驱动 + 记录表单驱动”
-5. 最后补不同任务类型的差异化校验
+## 当前阶段统一结论
 
----
+Phase 1 的状态机必须坚持三件事：
 
-## 一句话总结
-状态守卫文档的核心作用，是把“任务推进”这件事从随手改字段，收成**有门槛、有留痕、有停机点、有收口标准的统一状态机**。
+1. **状态推进靠 action，不靠状态下拉框**
+2. **责任迁移靠 handoff，不靠 PATCH owner**
+3. **审核收口靠 review + delivery summary，不靠口头默认通过**
+
+只要这三条不破，Codex 在实现时就不会轻易写出“双轨流转”和“隐式跳状态”的代码。
