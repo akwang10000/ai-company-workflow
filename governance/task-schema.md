@@ -1,20 +1,50 @@
 # governance/task-schema.md
 
 ## 目标
-定义本项目统一的任务单结构，让 Codex / 智能体在接单、执行、交接、审核、归档时使用同一套字段。
+定义 **Phase 1（软件公司模板 / 研发团队版）** 使用的统一任务单结构，让 Codex / 智能体 / 人类执行者在接单、补全、交接、审核、归档时使用同一套最小字段。
 
-这份文档优先服务于：
-- 研发团队版第一阶段
-- 后续迁移到 AI 短剧、自媒体运营等场景时的复用
+这份文档当前只服务于：
+- Phase 1 软件研发团队场景
+- `feature` / `bugfix` / `hotfix` 三类任务
+- 任务单创建、补字段、治理校验与示例编写
+
+它**不是**：
+- 当前仓库的通用多行业终态 schema
+- 后端运行时表结构单一真相
+- API DTO 单一真相
+
+正式运行时对象与接口契约仍以：
+- `product/domain-model.md`
+- `product/api-contracts.md`
+- `product/task-transition-api-and-actions.md`
+
+为准。
 
 ---
 
 ## 设计原则
 - 没有任务单，不进入正式执行
 - 没有验收标准，不进入执行阶段
-- 没有负责人，不允许悬空流转
-- 没有状态变化，不算有效推进
-- 任务单必须支持交接、返工、审核、归档
+- 没有明确责任边界，不允许悬空推进
+- 没有结构化记录，不算有效交接 / 审核 / 收口
+- 当前文档优先服务 **Phase 1 软件研发团队版**，不在这里继续扩多行业口径
+
+---
+
+## Phase 1 固定范围
+
+### `task_type`
+当前 Phase 1 只允许：
+- `feature`
+- `bugfix`
+- `hotfix`
+
+### `scenario`
+当前 Phase 1 固定为：
+- `engineering`
+
+> 若未来需要扩展到其他场景，应在后续版本单独收口，
+> 不应反向把未来设想写回当前 Phase 1 主真相。
 
 ---
 
@@ -23,19 +53,8 @@
 ### 1. 基础标识
 - `task_id`：任务唯一 ID
 - `title`：任务名称
-- `task_type`：任务类型
-  - `feature`
-  - `bugfix`
-  - `research`
-  - `refactor`
-  - `ops`
-  - `content`
-  - `custom`
-- `scenario`：所属场景
-  - `engineering`
-  - `short_drama`
-  - `self_media`
-  - `generic`
+- `task_type`：任务类型（当前仅 `feature / bugfix / hotfix`）
+- `scenario`：所属场景（当前固定 `engineering`）
 
 ### 2. 目标定义
 - `goal`：任务目标
@@ -60,7 +79,6 @@
   - `code`
   - `report`
   - `checklist`
-  - `media`
   - `mixed`
 - `acceptance_criteria`：验收标准列表
 - `definition_of_done`：Done 判定
@@ -81,10 +99,11 @@
   - `Rework Required`
   - `Ready for Delivery`
   - `Done`
-  - `Archived`
   - `Cancelled`
-- `current_owner`：当前负责人
-- `next_owner`：下一步接收方
+  - `Archived`
+- `planned_owner`：计划负责人（治理层人类可读写法）
+- `current_owner`：当前责任人（治理层人类可读写法）
+- `next_owner`：下一接手方（治理层人类可读写法）
 - `due_at`：截止时间
 - `risk_level`：风险等级
   - `low`
@@ -96,7 +115,7 @@
 - `decision_reason`：为什么需要决策
 - `decision_options`：可选方案列表
 - `recommended_option`：推荐方案
-- `approver`：审批人
+- `approver`：审批主体
 
 ### 7. 执行记录
 - `execution_plan`：当前执行计划
@@ -112,6 +131,23 @@
 - `artifacts`：产物清单
 - `postmortem_needed`：是否需要复盘
 - `archived_at`：归档时间
+
+---
+
+## 与正式运行时模型的映射
+
+这份文档里的字段写法以**治理层 / 人类可读**为主，允许使用 snake_case 和角色名称；但正式运行时真相不以这里为准，而以产品主文档为准。
+
+### owner 字段映射
+- `planned_owner`：治理层别名，对应运行时 `plannedOwner` / `planned_owner_role_assignment_id`
+- `current_owner`：治理层别名，对应运行时 `currentOwner` / `current_owner_role_assignment_id`
+- `next_owner`：治理层别名，对应运行时 `nextOwner` / `next_owner_role_assignment_id`
+
+### 关键约束
+- `planned_owner` 可在任务创建或补字段阶段维护
+- `current_owner` / `next_owner` 的业务变化以 transition 为准，不允许把这份文档当成普通 PATCH 更新依据
+- API 层字段命名、返回结构、owner 真相以 `product/api-contracts.md` 为准
+- 任务状态与 owner 的主真相以 `product/domain-model.md` 为准
 
 ---
 
@@ -193,6 +229,7 @@ definition_of_done: 需求、实现、审核、交付说明均完成，并获得
 
 priority: medium
 status: Ready
+planned_owner: Tech Lead Agent
 current_owner: PM Agent
 next_owner: Tech Lead Agent
 due_at: TBD
@@ -202,14 +239,14 @@ decision_required: false
 decision_reason: ""
 decision_options: []
 recommended_option: ""
-approver: CEO
+approver: CEO / 指定 Approver
 
 execution_plan:
   - PM 澄清需求
   - Tech Lead 输出方案
   - Dev 实现并自测
   - QA 审核
-  - CEO 确认交付
+  - PM / Ops 确认交付
 work_log: []
 handoff_note: "PM 已明确需求和验收标准，待技术评估"
 review_note: ""
@@ -222,3 +259,20 @@ final_result: ""
 artifacts: []
 postmortem_needed: false
 archived_at: ""
+```
+
+---
+
+## 当前阶段统一结论
+
+当前 `governance/task-schema.md` 只负责：
+- Phase 1 研发团队版任务单填写结构
+- feature / bugfix / hotfix 示例字段
+- 治理层补字段与校验口径
+
+它不再承担：
+- 多行业终态 schema
+- 运行时 DB 设计真相
+- 通用任务平台扩展入口
+
+如果这份文档与 `product/domain-model.md`、`product/api-contracts.md`、`product/task-transition-api-and-actions.md` 冲突，以后者为准。

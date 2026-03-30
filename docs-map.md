@@ -145,9 +145,10 @@
 ## 第四层：治理与执行控制文档
 
 ### `governance/task-schema.md`
-- 用途：定义统一任务单结构
-- 什么时候看：创建、补全、校验任务单时
-- 主要回答：一个任务最少要有哪些字段
+- 用途：定义 **Phase 1 研发团队版** 任务单填写结构与治理字段
+- 什么时候看：创建、补全、校验 `feature / bugfix / hotfix` 任务单时
+- 主要回答：当前软件公司模板 MVP 下，一条任务最少要有哪些字段
+- 边界：它是治理层填写 / 样例 schema，不替代 `product/domain-model.md` 或 `product/api-contracts.md`，也不再承担多行业终态 schema 职责
 
 ### `governance/decision-gates.md`
 - 用途：定义审批门和停机点

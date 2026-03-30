@@ -377,9 +377,11 @@
 
 #### 统一约束
 
-- `start_review` 必须生成 `ReviewRecord(review_status=started, result=pending)`
-- `reject_to_rework` 必须生成或落地一条 `ReviewRecord(result=rejected)`
-- `mark_ready_for_delivery` 必须带出审核通过结论，生成或落地一条 `ReviewRecord(result=passed)`
+- Phase 1 的 `ReviewRecord` 采用 **append-only** 规则，不在旧记录上直接回写审核结果
+- `start_review` 必须新建一条 `ReviewRecord(review_status=started, result=pending)`
+- `reject_to_rework` 必须新建一条 `ReviewRecord(review_status=completed, result=rejected)`
+- `mark_ready_for_delivery` 必须带出审核通过结论，并新建一条 `ReviewRecord(review_status=completed, result=passed)`
+- `Ready for Delivery` 的审核前置条件，以最新一条 `review_status=completed` 且 `result=passed` 的 `ReviewRecord` 为准
 
 ---
 

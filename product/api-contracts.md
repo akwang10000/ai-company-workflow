@@ -30,7 +30,9 @@
 - task transition 归 action-driven transition
 - 不允许旧的 `fromStatus -> toStatus` 范式继续作为主契约存在
 - `PATCH /api/tasks/{taskId}` 只允许更新**非流转字段**
+- Phase 1 普通 PATCH 只允许维护 `plannedOwner` 与非流转字段
 - `currentOwner` / `nextOwner` / `status` 的业务变化必须走 transition
+- Phase 1 不开放普通 `currentOwner` / `nextOwner` reassign 接口
 - decision 审批与 task 恢复分开：审批接口只解决 decision record，不直接推进 task
 
 ---
@@ -58,6 +60,17 @@
   }
 }
 ```
+
+### HTTP 语义最小建议
+
+- `400 Bad Request`：请求结构非法、缺少基础字段、未知 action
+- `403 Forbidden`：角色不允许、owner 不匹配、actor 无权执行
+- `404 Not Found`：task / decision / workflow 资源不存在
+- `409 Conflict`：版本冲突、重复提交导致的状态已变化
+- `422 Unprocessable Entity`：guard 不满足、前置记录缺失、decision 未 resolve、payload 业务校验失败
+
+> 说明：具体业务错误码仍以 `product/task-transition-api-and-actions.md` 为准；
+> 这里给的是 API 层最小 HTTP 语义约束。
 
 ---
 
@@ -276,6 +289,7 @@
 - 更新截止时间
 - 更新 `plannedOwner`
 - 更新非流转型业务字段
+- Phase 1 如需人工调整当前推进责任，先通过 transition 重新组织流转，不通过普通 PATCH 改 `currentOwner` / `nextOwner`
 
 #### 明确禁止
 
@@ -308,7 +322,9 @@
 
 - 该接口采用 action-driven 模型
 - 前端不传 `fromStatus -> toStatus` 作为唯一真相
+- 生产契约中 actor 身份来自服务端认证上下文，不应依赖请求体里的 actor 字段
 - target status 由后端根据 action、当前状态、guard、payload、角色权限推导
+- transition 应支持 `taskVersion` 或等价乐观锁校验；版本冲突时返回 `409 Conflict` + `TRANSITION_VERSION_CONFLICT`
 - 具体 action 约束、payload 结构、side effects 以 `product/task-transition-api-and-actions.md` 为准
 
 #### 请求体建议
@@ -484,6 +500,7 @@
 - `resolvedBy`
 - `resolvedAt`
 - `relatedTaskId`
+- `nextSuggestedTaskAction`（建议为 `resume_after_decision`，但不直接改 task 状态）
 
 ---
 

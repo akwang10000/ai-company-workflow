@@ -41,6 +41,7 @@
 - `product/task-status-guards.md`
 - `product/task-transition-api-and-actions.md`
 - `product/api-contracts.md`
+- `product/implementation-phases.md`
 - `product/minimum-software-company-template.md`
 
 ### 只允许跟随性小修
@@ -71,14 +72,17 @@
 - 明确 Phase 1 只做“软件公司模板 / 研发团队版”
 - 明确 `TaskInstance` 是任务业务状态主真相
 - 明确 `PATCH /tasks/{id}` 不能直接改 `status/currentOwner/nextOwner`
+- 明确 `governance/task-schema.md` 只服务 Phase 1 研发团队版，不再保留多行业漂移口
 - 明确 handoff 与 review 的默认顺序
+- 明确 `ReviewRecord` 采用 append-only 生命周期
 - 明确 decision approval 与 task resume 的边界
+- 明确 actor 身份来源与最小版本冲突 / 幂等规则
 - 冻结主骨架文档
 
 ### Validation
 
 - 文档之间不再双轨并存
-- README、domain model、status guards、transition、API 契约口径一致
+- README、domain model、status guards、transition、API 契约、task schema 口径一致
 - Codex 能基于文档开始正式施工
 
 ### 退出标准

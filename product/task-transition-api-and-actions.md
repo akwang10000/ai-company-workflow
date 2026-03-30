@@ -85,6 +85,7 @@
 ```json
 {
   "action": "submit_handoff",
+  "taskVersion": 7,
   "comment": "已完成实现与自测，提交给 QA 回归",
   "payload": {
     "handoff": {
@@ -100,6 +101,19 @@
   }
 }
 ```
+
+### 最小并发字段建议
+
+```json
+{
+  "taskVersion": 7,
+  "idempotencyKey": "transition-task_001-submit_handoff-0001"
+}
+```
+
+说明：
+- `taskVersion`：用于最小乐观锁校验，防止旧状态重复提交
+- `idempotencyKey`：对高风险动作建议传入；若服务端启用去重，应以它识别重复请求
 
 ### 开发期可选调试字段
 
@@ -152,6 +166,7 @@
 
 - 仅表示计划负责人
 - 可在任务创建或补字段阶段通过普通更新维护
+- Phase 1 若需要人工调整 owner，默认只允许调整 `plannedOwner`，不开放普通 `currentOwner` / `nextOwner` 改派通道
 
 ### 2. `currentOwner`
 
@@ -162,6 +177,13 @@
 
 - 表示下一位待接手责任人
 - 主要在 `submit_handoff`、`request_decision`、`reopen_from_delivery`、`resume_after_decision` 等动作中更新
+
+### 3.5 管理性重新指派边界（Phase 1）
+
+- `PATCH /api/tasks/{taskId}` 只允许维护 `plannedOwner` 与非流转字段
+- Phase 1 **不开放**普通 `currentOwner` / `nextOwner` reassign 接口
+- `currentOwner` / `nextOwner` 的业务变化，一律视为 transition side effect
+- 若后续需要独立“管理性改派当前责任人”能力，应在后续 phase 单独设计，不回写到当前主契约
 
 ### 4. handoff 场景
 
@@ -243,6 +265,16 @@
 
 ---
 
+## ReviewRecord 生命周期统一规则（Phase 1）
+
+为避免实现分叉，Phase 1 统一采用 **append-only ReviewRecord**：
+
+- `start_review`：新建一条 `ReviewRecord(review_status=started, result=pending)`
+- `reject_to_rework`：新建一条 `ReviewRecord(review_status=completed, result=rejected)`
+- `mark_ready_for_delivery`：新建一条 `ReviewRecord(review_status=completed, result=passed)`
+- Phase 1 不要求在旧 `ReviewRecord` 上原地更新最终审核结果
+- `Ready for Delivery` 的审核前置条件，以最新一条 `review_status=completed` 且 `result=passed` 的 `ReviewRecord` 为准
+
 ## payload 规则
 
 ### 通用规则
@@ -250,7 +282,7 @@
 - `action`：必填，必须为已注册 action 枚举值
 - `comment`：可选，但对 medium / high danger action 建议填写
 - `payload`：按 action 决定是否必填
-- actor 身份默认来自服务端认证上下文
+- actor 身份默认来自服务端认证上下文，生产契约不应把请求体里的 actor 字段当作可信输入
 
 ### 空值规则
 
@@ -603,13 +635,14 @@ transition 成功后，后端应自动：
 - 刷新 `availableActions`
 - 返回 `nextSuggestedActions`
 
-### 4. 并发与幂等建议
+### 4. 并发与幂等最小规则
 
 Phase 1 最少要做到：
 
-- transition 请求支持 `taskVersion` 或等价版本号校验
-- 同一个任务的 transition 失败时返回明确冲突错误
-- 对高风险动作建议支持 idempotency key
+- transition 请求必须支持 `taskVersion` 或等价版本号校验
+- 当客户端基于旧版本提交 transition 时，后端必须拒绝，并返回 `TRANSITION_VERSION_CONFLICT`
+- 同一个任务的 transition 失败时返回明确冲突错误，不允许静默覆盖
+- 对 high danger 动作，至少要支持服务端去重或 `idempotencyKey` 二选一；若支持 `idempotencyKey`，重复请求不得重复落记录
 
 ---
 

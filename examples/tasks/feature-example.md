@@ -5,6 +5,9 @@
 
 ---
 
+> 说明：以下 `current_owner` / `next_owner` 为治理层人类可读写法；
+> 正式运行时字段、owner 真相与可更新边界，以 `product/domain-model.md`、`product/api-contracts.md`、`product/task-transition-api-and-actions.md` 为准。
+
 ## 示例任务
 - task_id: `FEAT-001`
 - title: `新增后台用户封禁记录查询页`

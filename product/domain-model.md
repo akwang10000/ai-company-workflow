@@ -271,6 +271,7 @@ Phase 1 默认采用以下 `role_key`：
 - `TaskInstance.current_owner_role_assignment_id` 是任务当前责任人的唯一主真相
 - `TaskInstance.next_owner_role_assignment_id` 表示“若需要交接，下一责任人是谁”
 - `planned_owner_role_assignment_id` 用于 Draft / Ready 阶段的计划负责人，不等于当前执行 owner
+- 治理层 / 示例文档中若使用 `planned_owner` / `current_owner` / `next_owner` 这类人类可读别名，正式运行时真相仍以这里的 role assignment id 字段为准
 - `available_action_keys` 只是投影缓存，可随时重算，不是主真相
 
 #### 说明
@@ -396,6 +397,14 @@ Phase 1 默认采用以下 `role_key`：
 - `start_review`
 - `reject_to_rework`
 - `mark_ready_for_delivery` 的前置审核证明
+
+#### 生命周期说明（Phase 1）
+
+- `ReviewRecord` 采用 **append-only** 模式，不在旧记录上回写最终结论
+- `start_review` 创建一条新记录：`review_status=started, result=pending`
+- `reject_to_rework` 创建一条新记录：`review_status=completed, result=rejected`
+- `mark_ready_for_delivery` 创建一条新记录：`review_status=completed, result=passed`
+- `Ready for Delivery` 的审核前置条件，以**最新一条 `review_status=completed` 且 `result=passed` 的 `ReviewRecord`** 为准
 
 ---
 
