@@ -73,15 +73,16 @@
   - `critical`
 - `status`：当前状态
   - `Draft`
-  - `Queued`
-  - `In Analysis`
+  - `Ready`
   - `In Progress`
-  - `Review`
-  - `Rework`
+  - `Waiting Handoff`
   - `Waiting Decision`
+  - `In Review`
+  - `Rework Required`
   - `Ready for Delivery`
   - `Done`
   - `Archived`
+  - `Cancelled`
 - `current_owner`：当前负责人
 - `next_owner`：下一步接收方
 - `due_at`：截止时间
@@ -191,7 +192,7 @@ acceptance_criteria:
 definition_of_done: 需求、实现、审核、交付说明均完成，并获得最终确认
 
 priority: medium
-status: In Analysis
+status: Ready
 current_owner: PM Agent
 next_owner: Tech Lead Agent
 due_at: TBD
@@ -221,18 +222,3 @@ final_result: ""
 artifacts: []
 postmortem_needed: false
 archived_at: ""
-```
-
----
-
-## 状态推进规则
-- `Draft`：仅允许补充任务信息
-- `Queued`：等待分派，不允许直接宣称完成
-- `In Analysis`：允许补需求、补方案、补上下文
-- `In Progress`：必须有明确执行计划
-- `Review`：必须附带可审核产物
-- `Rework`：必须附带返工意见
-- `Waiting Decision`：必须附带决策原因、选项、推荐项
-- `Ready for Delivery`：表示已具备交付条件，等待最终确认
-- `Done`：必须满足 `definition_of_done`
-- `Archived`：必须有最终摘要和产物索引
