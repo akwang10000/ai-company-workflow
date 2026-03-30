@@ -1,58 +1,82 @@
 # product/domain-model.md
 
 ## 目标
-定义 AI Company Workflow 第一阶段（研发团队版）的核心领域模型，确保后端建模、前端状态结构、模板实例化和 Codex 实施都围绕同一套对象体系推进。
+定义 AI Company Workflow 在 **Phase 1 MVP（软件公司模板 / 研发团队版）** 的核心领域模型，确保后端建模、前端核心状态结构、模板实例化关系和 Codex 施工都围绕同一套对象体系推进。
 
-这份文档解决的问题是：
+这份文档主要回答：
 - 系统里到底有哪些核心对象
-- 这些对象之间是什么关系
-- 模板与实例怎么区分
-- 哪些对象是第一阶段必须落地的
+- 模板对象与运行时对象如何区分
+- task transition 相关记录应该如何建模
+- 哪些对象是 Phase 1 必须先落地的
 
 ---
 
 ## 核心原则
-- 先把核心对象收死，再谈前后端细节
+- 先把核心对象收死，再谈实现细节
 - 模板对象与运行时实例对象必须分开
 - workflow、task、角色、技能不要混成一个大对象
-- 第一阶段先满足研发团队版，不急着一次抽象全行业终态
+- task transition 相关记录必须显式建模，不要全部塞进日志
+- Phase 1 先满足软件公司模板，不急着一次抽象全行业终态
 
 ---
 
 ## 第一阶段核心对象总览
-建议第一阶段至少包含以下对象：
 
 ### 模板层对象
+- `CompanyTemplate`
 - `RoleTemplate`
 - `WorkflowTemplate`
 - `TaskTemplate`
 - `SkillPackageTemplate`
-- `CompanyTemplate`
 
 ### 运行时对象
 - `Workspace`
-- `WorkflowInstance`
-- `TaskInstance`
 - `RoleAssignment`
+- `TaskInstance`
+- `WorkflowInstance`
 - `DecisionRecord`
 - `HandoffRecord`
+- `ReviewRecord`
+- `DeliverySummaryRecord`
 - `ExecutionLog`
 
-### 视图层对象
+### 视图投影对象
 - `CanvasNode`
 - `CanvasEdge`
 - `NodeDetailViewModel`
+- `TaskActionProjection`
 
 ---
 
-## 模板层对象
+## 一、模板层对象
 
-### 1. `RoleTemplate`
+### 1. `CompanyTemplate`
+代表“第一个软件公司模板”这类最小启动模板。
+
+#### 最小字段建议
+- `company_template_id`
+- `name`
+- `summary`
+- `included_role_template_ids`
+- `included_workflow_template_ids`
+- `included_task_template_ids`
+- `included_skill_package_template_ids`
+- `recommended_start_flow`
+- `status`
+- `version`
+
+#### 说明
+它是 Phase 1 最关键的聚合模板对象。
+
+---
+
+### 2. `RoleTemplate`
 代表一个可复用角色模板。
 
 #### 最小字段建议
 - `role_template_id`
 - `name`
+- `role_key`
 - `role_type`
 - `department`
 - `summary`
@@ -66,11 +90,11 @@
 - `version`
 
 #### 说明
-它描述的是“这个角色应该是什么样”，不是某一次任务里谁正在执行。
+它描述的是“这个角色应该是什么样”，不是某次任务里谁正在执行。
 
 ---
 
-### 2. `WorkflowTemplate`
+### 3. `WorkflowTemplate`
 代表一个可复用工作流模板。
 
 #### 最小字段建议
@@ -88,11 +112,11 @@
 - `version`
 
 #### 说明
-它描述的是 feature / bugfix / hotfix 这种流转骨架，不是具体某个任务实例本身。
+它描述的是 feature / bugfix / hotfix 的流转骨架，不是具体任务实例本身。
 
 ---
 
-### 3. `TaskTemplate`
+### 4. `TaskTemplate`
 代表可复用的任务单模板或任务样例骨架。
 
 #### 最小字段建议
@@ -110,7 +134,7 @@
 
 ---
 
-### 4. `SkillPackageTemplate`
+### 5. `SkillPackageTemplate`
 代表一组可随角色或 workflow 默认挂载的技能包模板。
 
 #### 最小字段建议
@@ -125,27 +149,7 @@
 
 ---
 
-### 5. `CompanyTemplate`
-代表“第一个软件公司模板”这类最小启动模板。
-
-#### 最小字段建议
-- `company_template_id`
-- `name`
-- `summary`
-- `included_role_template_ids`
-- `included_workflow_template_ids`
-- `included_task_template_ids`
-- `included_skill_package_template_ids`
-- `recommended_start_flow`
-- `status`
-- `version`
-
-#### 说明
-它是第一阶段最关键的聚合模板对象。
-
----
-
-## 运行时对象
+## 二、运行时对象
 
 ### 1. `Workspace`
 代表用户基于某个 `CompanyTemplate` 实例化出来的一套工作空间。
@@ -161,19 +165,19 @@
 
 ---
 
-### 2. `WorkflowInstance`
-代表某个模板 workflow 在某个 workspace 中实例化后的运行对象。
+### 2. `RoleAssignment`
+代表某个角色模板在 workspace 中被实例化后的实际角色实例。
 
 #### 最小字段建议
-- `workflow_instance_id`
-- `workflow_template_id`
+- `role_assignment_id`
 - `workspace_id`
-- `task_instance_id`
-- `current_status`
-- `current_node_id`
-- `current_owner_role_assignment_id`
-- `started_at`
-- `updated_at`
+- `role_template_id`
+- `role_key`
+- `display_name`
+- `bound_user_id`
+- `bound_agent_id`
+- `enabled_skill_package_ids`
+- `status`
 
 ---
 
@@ -191,28 +195,35 @@
 - `status`
 - `priority`
 - `severity`
-- `current_owner`
-- `next_owner`
+- `current_owner_role_assignment_id`
+- `next_owner_role_assignment_id`
 - `acceptance_criteria`
 - `definition_of_done`
 - `known_risks`
 - `created_at`
 - `updated_at`
 
+#### 补充建议字段
+- `current_workflow_instance_id`
+- `available_action_keys`（可选缓存 / 投影字段）
+- `latest_review_result`
+- `latest_delivery_readiness`
+
 ---
 
-### 4. `RoleAssignment`
-代表某个角色模板在某个 workspace / workflow 中被分配后的实际角色实例。
+### 4. `WorkflowInstance`
+代表某个模板 workflow 在某个 workspace 中实例化后的运行对象。
 
 #### 最小字段建议
-- `role_assignment_id`
+- `workflow_instance_id`
+- `workflow_template_id`
 - `workspace_id`
-- `role_template_id`
-- `display_name`
-- `bound_user_id`
-- `bound_agent_id`
-- `enabled_skill_package_ids`
-- `status`
+- `task_instance_id`
+- `current_status`
+- `current_node_id`
+- `current_owner_role_assignment_id`
+- `started_at`
+- `updated_at`
 
 ---
 
@@ -223,13 +234,19 @@
 - `decision_record_id`
 - `task_instance_id`
 - `workflow_instance_id`
-- `decision_type`
-- `reason`
+- `decision_topic`
+- `decision_question`
 - `options`
 - `recommended_option`
-- `approver`
+- `risk_summary`
+- `approver_role_key`
 - `decision_result`
+- `status`
 - `created_at`
+- `resolved_at`
+
+#### 说明
+用于支撑 `request_decision` / `resume_after_decision` 这类 transition。
 
 ---
 
@@ -239,17 +256,63 @@
 #### 最小字段建议
 - `handoff_record_id`
 - `task_instance_id`
+- `workflow_instance_id`
 - `from_role_assignment_id`
 - `to_role_assignment_id`
-- `completed_items`
-- `unfinished_items`
+- `handoff_summary`
+- `delivered_artifacts`
 - `known_risks`
 - `next_actions`
 - `created_at`
 
+#### 说明
+用于支撑 `submit_handoff` 这类 transition。
+
 ---
 
-### 7. `ExecutionLog`
+### 7. `ReviewRecord`
+代表一次审核 / 回归 / 技术复核记录。
+
+#### 最小字段建议
+- `review_record_id`
+- `task_instance_id`
+- `workflow_instance_id`
+- `review_type`
+- `reviewer_role_assignment_id`
+- `result`
+- `checklist_summary`
+- `issues_found`
+- `next_action`
+- `created_at`
+
+#### 说明
+用于支撑：
+- `start_review`
+- `reject_to_rework`
+- `mark_ready_for_delivery` 的前置审核证明
+
+---
+
+### 8. `DeliverySummaryRecord`
+代表进入 `Ready for Delivery` 前的交付摘要记录。
+
+#### 最小字段建议
+- `delivery_summary_record_id`
+- `task_instance_id`
+- `workflow_instance_id`
+- `change_summary`
+- `affected_scope`
+- `validation_summary`
+- `remaining_risks`
+- `created_by_role_assignment_id`
+- `created_at`
+
+#### 说明
+用于支撑 `mark_ready_for_delivery`。
+
+---
+
+### 9. `ExecutionLog`
 代表任务和 workflow 的执行日志。
 
 #### 最小字段建议
@@ -263,9 +326,13 @@
 - `payload`
 - `created_at`
 
+#### 说明
+日志不是 review / handoff / decision / delivery summary 的替代品。
+它用于审计追踪和 timeline 展示，不应承担全部业务语义。
+
 ---
 
-## 视图层对象
+## 三、视图投影对象
 
 ### 1. `CanvasNode`
 用于前端画布展示的节点对象。
@@ -309,65 +376,103 @@
 - `enabled_skills`
 - `risks`
 - `latest_logs`
+- `latest_record_summaries`
 - `available_actions`
 
 ---
 
-## 对象关系（第一阶段）
+### 4. `TaskActionProjection`
+用于前端任务详情页或节点详情页展示当前可执行动作。
+
+#### 最小字段建议
+- `action_key`
+- `label`
+- `enabled`
+- `disabled_reason`
+- `requires_confirmation`
+- `required_payload_type`
+
+#### 说明
+这是运行时投影，不是模板层对象。
+它由当前状态、guard、角色权限、前置记录共同计算得出。
+
+---
+
+## 四、对象关系
 
 ### 模板聚合关系
 - 一个 `CompanyTemplate` 包含多个 `RoleTemplate`
 - 一个 `CompanyTemplate` 包含多个 `WorkflowTemplate`
 - 一个 `CompanyTemplate` 包含多个 `TaskTemplate`
-- 一个 `RoleTemplate` 可以默认挂多个 `SkillPackageTemplate`
-- 一个 `WorkflowTemplate` 可以声明多个默认角色与节点
+- 一个 `RoleTemplate` 可默认挂多个 `SkillPackageTemplate`
+- 一个 `WorkflowTemplate` 可声明多个默认角色与节点
 
 ### 实例化关系
 - 一个 `CompanyTemplate` 可实例化为一个 `Workspace`
 - 一个 `Workspace` 可包含多个 `RoleAssignment`
-- 一个 `TaskTemplate` 可实例化为 `TaskInstance`
 - 一个 `WorkflowTemplate` 可实例化为 `WorkflowInstance`
+- 一个 `TaskTemplate` 可实例化为 `TaskInstance`
 - 一个 `TaskInstance` 通常对应一个主 `WorkflowInstance`
-- 一个 `TaskInstance` 可产生多个 `DecisionRecord`、`HandoffRecord`、`ExecutionLog`
+
+### transition 记录关系
+- 一个 `TaskInstance` 可产生多个 `DecisionRecord`
+- 一个 `TaskInstance` 可产生多个 `HandoffRecord`
+- 一个 `TaskInstance` 可产生多个 `ReviewRecord`
+- 一个 `TaskInstance` 可产生多个 `ExecutionLog`
+- 一个 `TaskInstance` 在进入 `Ready for Delivery` 前至少应有一个有效 `DeliverySummaryRecord`
 
 ### 视图映射关系
 - 一个 `WorkflowInstance` 可投影为一组 `CanvasNode` + `CanvasEdge`
 - 每个 `CanvasNode` 关联一个真实领域对象
-- `NodeDetailViewModel` 由运行时对象拼装生成，不作为核心主存储对象
+- `NodeDetailViewModel` 和 `TaskActionProjection` 由运行时对象拼装生成，不作为核心主存储对象
 
 ---
 
-## 第一阶段必须先落地的对象
+## 五、Phase 1 必须先落地的对象
 为了让产品先跑起来，建议优先落地：
 1. `CompanyTemplate`
 2. `RoleTemplate`
 3. `WorkflowTemplate`
-4. `TaskInstance`
-5. `WorkflowInstance`
+4. `TaskTemplate`
+5. `Workspace`
 6. `RoleAssignment`
-7. `DecisionRecord`
-8. `HandoffRecord`
-9. `CanvasNode`
-10. `CanvasEdge`
+7. `TaskInstance`
+8. `WorkflowInstance`
+9. `DecisionRecord`
+10. `HandoffRecord`
+11. `ReviewRecord`
+12. `DeliverySummaryRecord`
+13. `ExecutionLog`
+14. `CanvasNode`
+15. `CanvasEdge`
 
 以下可以第二阶段再增强：
 - 更复杂的 `SkillPackageTemplate` 元数据
 - 更细的 `ExecutionLog.payload`
 - 跨 workflow 复合编排关系
+- 更复杂的角色权限关系图
 
 ---
 
-## Codex 实施提示
-如果 Codex 依据本文档开始实现，建议顺序是：
-1. 先建模板层对象
-2. 再建运行时对象
-3. 再建画布投影对象
-4. 最后补对象间转换与实例化逻辑
+## 六、与其他文档的关系
+- `product/domain-model.md`：定义对象与对象关系
+- `product/api-contracts.md`：定义这些对象如何通过 API 暴露
+- `product/task-status-guards.md`：定义哪些状态转换合法
+- `product/task-transition-api-and-actions.md`：定义 action 如何触发记录创建与状态推进
+- `product/template-instantiation-flow.md`：定义模板对象如何实例化为运行时对象
 
-不要一上来就从画布 UI 反推领域模型。
+---
+
+## 七、当前阶段统一结论
+Phase 1 里最容易被做虚的一块，就是把 decision / handoff / review / delivery summary 都混成“日志”。
+
+当前统一口径是：
+- 这些记录都应是显式业务对象
+- 日志只做审计与事件流，不替代一等业务记录
 
 ---
 
 ## 一句话总结
-这套系统的核心不是“一个大而全的任务对象”，而是：
-**公司模板聚合角色、workflow、任务、技能；运行时再实例化成 workspace、task、workflow 和画布视图。**
+这份文档的作用，是把 Phase 1 的对象体系收成一套：
+
+**模板、运行时实例、transition 记录、视图投影都能对齐，并足够支撑 Codex 继续施工的领域模型。**
