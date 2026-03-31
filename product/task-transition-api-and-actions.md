@@ -100,6 +100,26 @@
 
 ---
 
+## 通用请求字段规则
+
+所有 transition 请求共享以下 envelope 字段：
+
+- `action`
+- `taskVersion`
+- `idempotencyKey`
+- `comment`
+- `payload`
+
+### `comment` 规则
+
+- `comment` 是所有 transition 通用的自然语言补充说明字段
+- `comment` 默认可选
+- `comment` 会写入 `ExecutionLog.comment`
+- `comment` 不能替代 action-specific payload 的 required fields
+- 若 action 已要求 `reason`、`acceptanceNote`、`issuesFound`、`changeSummary` 等结构化字段，仍必须照 payload 规范提交
+
+---
+
 ## Action Registry（Phase 1）
 
 | action | from status | to status | 必要记录 | owner side effect |
@@ -164,7 +184,21 @@
 - `deliveredArtifacts` 不可为空数组
 - `toRole` 不能与 `fromRole` 相同
 
-### 2. `decisionRequest` payload
+### 2. `handoffAcceptance` payload
+
+适用 action：`accept_handoff`
+
+#### required fields
+
+- `acceptanceNote`
+
+#### rules
+
+- `acceptanceNote` 用于说明接手确认、已知前置物已收到、下一步将如何继续
+- 不得用 `comment` 替代 `acceptanceNote`
+- `accept_handoff` 成功后，必须将 `currentOwner` 更新为 `nextOwner`
+
+### 3. `decisionRequest` payload
 
 适用 action：`request_decision`
 
@@ -175,7 +209,7 @@
 - `recommendedOption`
 - `approver`
 
-### 3. `decisionResume` payload
+### 4. `decisionResume` payload
 
 适用 action：`resume_after_decision`
 
@@ -191,7 +225,7 @@
 - `resumeToStatus` 只能是 `Ready` / `In Progress` / `Cancelled`
 - `decisionRecordId` 必须指向当前任务最新 active 且已 resolve 的 decision
 
-### 4. `reviewStart` payload
+### 5. `reviewStart` payload
 
 适用 action：`start_review`
 
@@ -200,7 +234,7 @@
 - `reviewType`
 - `checklistSummary`
 
-### 5. `reviewReject` payload
+### 6. `reviewReject` payload
 
 适用 action：`reject_to_rework`
 
@@ -212,7 +246,7 @@
 - `nextAction`
 - `returnToRole`
 
-### 6. `deliverySummary` payload
+### 7. `deliverySummary` payload
 
 适用 action：`mark_ready_for_delivery`
 
@@ -222,8 +256,15 @@
 - `affectedScope`
 - `validationSummary`
 - `remainingRisks`
+- `deliveryTo`
 
-### 7. `reopen` payload
+#### rules
+
+- `deliveryTo` 不可为空
+- `deliveryTo` 表示当前任务进入交付确认时的明确交付对象 / 最终确认方
+- `mark_ready_for_delivery` 成功时，服务端基于该 payload 创建 `DeliverySummaryRecord`
+
+### 8. `reopen` payload
 
 适用 action：`reopen_from_delivery`
 
@@ -232,7 +273,7 @@
 - `reason`
 - `reopenToRole`
 
-### 8. `cancel` payload
+### 9. `cancel` payload
 
 适用 action：`cancel_task`
 

@@ -134,7 +134,7 @@
 |---|---|---|
 | `start_review` | `reviewType`, `checklistSummary` | `ReviewRecord(result=pending)`, `ExecutionLog` |
 | `reject_to_rework` | `reviewType`, `checklistSummary`, `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` |
-| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` |
+| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks`, `deliveryTo[]` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` |
 
 #### 必须补齐
 

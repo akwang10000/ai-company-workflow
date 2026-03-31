@@ -130,6 +130,12 @@
 }
 ```
 
+#### 通用字段说明
+
+`comment` 为所有 transition 共享的通用补充说明字段，默认可选，并持久化到 `ExecutionLog.comment`。
+
+对 `mark_ready_for_delivery`，payload 必须提供生成 `DeliverySummaryRecord` 所需的完整字段，包括 `deliveryTo`。
+
 #### 关键返回
 
 - `previousStatus`

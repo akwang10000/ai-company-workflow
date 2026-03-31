@@ -168,7 +168,7 @@
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner = qa_review_agent` |
 | `start_review` | `reviewType`, `checklistSummary` | `ReviewRecord(result=pending)`, `ExecutionLog` | 当前 owner 必须已是审核侧 |
 | `reject_to_rework` | `reviewType`, `checklistSummary`, `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` | 当前状态必须为 `In Review` |
-| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` | 当前状态必须为 `In Review` |
+| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks`, `deliveryTo[]` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` | 当前状态必须为 `In Review` |
 
 #### 必填产物
 
