@@ -49,7 +49,17 @@
 
 不能只追求“写得像文档”，而要追求“代理能照着做”。
 
-### 4. 编码格式统一为 UTF-8
+### 4. 仓库内必须存在唯一进度真相文件
+当前项目要求维护：
+- `tasks/IMPLEMENTATION-PROGRESS.md`
+
+规则：
+- 它是仓库内唯一的实施进度真相文件
+- 每完成一轮有效实施，必须同步更新它
+- 若未更新它，不算完成本轮交付
+- 新会话 / 新代理恢复执行前，必须先读取它
+
+### 5. 编码格式统一为 UTF-8
 本项目中的所有文档、代码、脚本统一使用 **UTF-8** 编码。
 
 在创建、编辑、批量改写、迁移文件时：
@@ -96,12 +106,13 @@
 
 ### 1. 执行时的默认阅读顺序
 1. `AGENTS.md`
-2. `governance/task-schema.md`
-3. `governance/decision-gates.md`
-4. 对应 `workflows/playbooks/*.md`
-5. 对应 `roles/playbooks/*.md`
-6. `governance/handoff-templates.md`
-7. 当前具体任务单 / 任务文档 / 样例文档
+2. `tasks/IMPLEMENTATION-PROGRESS.md`
+3. `governance/task-schema.md`
+4. `governance/decision-gates.md`
+5. 对应 `workflows/playbooks/*.md`
+6. 对应 `roles/playbooks/*.md`
+7. `governance/handoff-templates.md`
+8. 当前具体任务单 / 任务文档 / 样例文档
 
 ### 2. 文档冲突处理规则
 - 项目级安全、审批、停止规则：以 `AGENTS.md` 为准
@@ -143,6 +154,21 @@
 - 没做什么
 - 风险点是什么
 - 下一步建议是什么
+
+### 3.5 每轮有效实施必须同步更新进度真相文件
+每轮有效实施后，必须同步更新：
+- `tasks/IMPLEMENTATION-PROGRESS.md`
+
+至少补齐：
+- 当前 phase / subphase
+- 最近完成项
+- 当前正在做的事
+- 当前阻塞 / 未决问题
+- 下一步
+
+若没有更新该文件：
+- 不算完成本轮交付
+- 新会话不得假定已有隐含进度
 
 ### 4. 每次角色切换必须有交接说明
 若发生角色切换，必须补：

@@ -13,24 +13,37 @@
 - 先按阶段做，不要跨阶段乱跳
 - 先保证主链路可运行，再补高级能力
 - 每轮改动都必须可解释、可验证、可交接
+- 每轮有效实施都必须落盘到仓库内唯一进度真相文件
 - 没有明确完成标准，不进入下一阶段
 - 涉及架构取舍、接口变更、UI 交互分歧时，先汇报再推进
 
 ---
 
 ## Codex 默认实施顺序
-1. 先读 `product/domain-model.md`
-2. 再读 `product/module-breakdown.md`
-3. 再读 `product/implementation-roadmap.md`
-4. 再读 `product/implementation-phases.md`
-5. 再读 `product/canvas-ui-spec.md`
-6. 再读 `product/screens-and-flows.md`
-7. 进入当前阶段具体实现
+1. 先读 `tasks/IMPLEMENTATION-PROGRESS.md`
+2. 再读 `product/domain-model.md`
+3. 再读 `product/module-breakdown.md`
+4. 再读 `product/implementation-roadmap.md`
+5. 再读 `product/implementation-phases.md`
+6. 再读 `product/canvas-ui-spec.md`
+7. 再读 `product/screens-and-flows.md`
+8. 进入当前阶段具体实现
 
 ---
 
 ## 每轮交付必须包含的内容
 每次提交或阶段性汇报，至少包含：
+
+### 0. Progress file update
+必须同步更新：
+- `tasks/IMPLEMENTATION-PROGRESS.md`
+
+至少写清：
+- 当前 phase / subphase
+- 最近完成项
+- 当前正在做什么
+- 当前阻塞 / 未决问题
+- 下一步最该做什么
 
 ### 1. Changed files
 列出本轮改动文件。
