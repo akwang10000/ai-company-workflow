@@ -1,44 +1,51 @@
 # product/codex-delivery-rules.md
 
 ## 目标
-定义 Codex 在当前项目实施过程中的交付规则，确保它能依据文档持续推进前后端实现，而不是：
-- 一次改太散
-- 不按阶段施工
-- 改完不说明
-- 验证不足就继续下一层
+
+定义 Codex / 自动化编码代理在当前阶段提交实现时的最小交付规则，确保每轮交付都与当前 Phase 1 主入口和进度真相一致。
 
 ---
 
-## 核心原则
-- 先按阶段做，不要跨阶段乱跳
-- 先保证主链路可运行，再补高级能力
-- 每轮改动都必须可解释、可验证、可交接
-- 每轮有效实施都必须落盘到仓库内唯一进度真相文件
-- 没有明确完成标准，不进入下一阶段
-- 涉及架构取舍、接口变更、UI 交互分歧时，先汇报再推进
+## 默认实施入口（必须与项目其它入口一致）
 
----
+每次进入实现前，默认按以下顺序读取：
 
-## Codex 默认实施顺序
-1. 先读 `tasks/IMPLEMENTATION-PROGRESS.md`
-2. 再读 `product/domain-model.md`
-3. 再读 `product/module-breakdown.md`
-4. 再读 `product/implementation-roadmap.md`
-5. 再读 `product/implementation-phases.md`
-6. 再读 `product/canvas-ui-spec.md`
-7. 再读 `product/screens-and-flows.md`
-8. 进入当前阶段具体实现
+1. `tasks/IMPLEMENTATION-PROGRESS.md`
+2. `AGENTS.md`
+3. `product/domain-model.md`
+4. `product/task-status-guards.md`
+5. `product/task-transition-api-and-actions.md`
+6. `product/api-contracts.md`
+7. `product/implementation-phases.md`
+8. `governance/task-schema.md`
+9. `governance/decision-gates.md`
+10. 对应 `workflows/playbooks/*.md`
+11. 对应 `roles/playbooks/*.md`
+12. `governance/ready-for-delivery-checklist.md`
+
+### 明确删除的旧入口口径
+
+以下文档不再作为当前默认主入口：
+
+- `module-breakdown.md`
+- `implementation-roadmap.md`
+- `canvas-ui-spec.md`
+- `screens-and-flows.md`
+
+若它们存在，也只能作为补充参考，不能盖过当前 product 主真相。
 
 ---
 
 ## 每轮交付必须包含的内容
-每次提交或阶段性汇报，至少包含：
 
 ### 0. Progress file update
+
 必须同步更新：
+
 - `tasks/IMPLEMENTATION-PROGRESS.md`
 
 至少写清：
+
 - 当前 phase / subphase
 - 最近完成项
 - 当前正在做什么
@@ -46,101 +53,52 @@
 - 下一步最该做什么
 
 ### 1. Changed files
+
 列出本轮改动文件。
 
 ### 2. What changed
+
 说明：
+
 - 做了什么
 - 为什么这么做
 - 当前属于哪个 phase
 
 ### 3. Validation
+
 说明：
+
 - 本轮做了哪些验证
 - 哪些地方还没验证
 - 结果如何
 
 ### 4. Current status
+
 说明：
+
 - 当前做到哪
 - 哪条主链路已通
 - 哪条还没通
 
-### 5. Next recommended step
+### 5. Risks / open questions
+
 说明：
-- 下一轮最该做什么
-- 为什么不是别的模块
+
+- 当前剩余风险
+- 是否存在需要进入 `Waiting Decision` 的问题
 
 ---
 
-## 每轮允许的改动规模
-### 建议上限
-- 只改一个明确子目标
-- 不要同时横跳后端模型、前端大改、画布交互、手机端适配四条线
-- 一轮优先收一个小闭环
+## 交付边界要求
 
-### 正确示例
-- 本轮只做模板中心后端 CRUD
-- 本轮只做 workflow instance 主状态流转
-- 本轮只做画布只读页 + 节点详情
-
-### 错误示例
-- 一轮里同时重写对象模型、改前端路由、补画布拖拽、再接 LLM 草稿生成
+- 不得在一轮实现里同时重开主模型、主状态机、主 API 三大口径
+- 若发现主真相文档存在歧义，应先修正文档，再实现
+- 若发现实现范围过大，优先缩小当前交付面，不要扩总纲
 
 ---
 
-## 必须先停下来汇报的情况
-出现以下任一情况，Codex 必须先汇报：
-- 需要改领域模型主对象
-- 需要改 API 契约
-- 需要改变画布核心布局方式
-- 需要改变阶段顺序
-- 发现现有文档互相冲突
-- 发现当前 phase 完成标准不合理
+## 当前阶段统一结论
 
----
+当前阶段的 Codex 交付规则只有一个目标：
 
-## 验证要求
-### 后端改动
-至少说明：
-- 实体 / API / 状态流转是否能跑通
-- 是否做了基础测试或手动验证
-
-### 前端改动
-至少说明：
-- 页面能否打开
-- 主交互是否可操作
-- 数据是否正确展示
-
-### 画布改动
-至少说明：
-- 节点是否正确渲染
-- 连线是否正确
-- 当前状态是否高亮
-- 详情面板是否能打开
-
----
-
-## 阶段切换规则
-Codex 不得因为“感觉差不多”就切到下一 phase。
-必须同时满足：
-- 当前阶段核心交付物已完成
-- 当前阶段主链路已验证
-- 当前阶段剩余问题已列清
-- 用户没有要求先改别的优先项
-
----
-
-## 禁止事项
-- 不按 phase 顺序乱跳
-- 不读实施文档就直接写代码
-- 不说明验证结果就宣称完成
-- 未跑通主链路就过早做高级能力
-- UI 还没定，就先铺大量细节组件
-- 后端对象模型没稳，就先把前端状态写死
-
----
-
-## 一句话总结
-Codex 在这个项目里不是“想到哪写哪”，而是要：
-**按 phase 小步交付，阶段清楚、验证清楚、下一步清楚。**
+> 让每轮实现都严格挂在同一套主入口与进度真相上，而不是再长出第二套施工顺序。

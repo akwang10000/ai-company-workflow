@@ -57,7 +57,7 @@ from_role: PM Agent
 to_role: Tech Lead Agent
 task_id: ENG-001
 task_title: 新增用户封禁记录查询页
-current_status: In Analysis
+current_status: In Progress
 completed_work:
   - 已明确业务目标
   - 已确认查询字段范围

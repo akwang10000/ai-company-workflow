@@ -1,148 +1,157 @@
 # workflows/workflow.md
 
 ## 目标
-定义研发任务在多角色之间如何流转，避免只有聊天、没有协作闭环。
 
-## 当前定位
-当前工作流是 **研发团队版第一方向**，用于验证 AI 组织工作流在研发场景下是否真能跑通。后续可以把同样的方法抽象后迁移到 AI 短剧、自媒体运营等场景。
+给当前 Phase 1 的研发协作模型提供一个总览，帮助第一次阅读项目的人快速理解：
+
+- 为什么需要 workflow
+- 为什么需要 role
+- 为什么需要 handoff / review / decision
+- 为什么不能退化成“所有人都随便改状态”的任务板
 
 ---
 
-## 第一版原则
+## 当前文档定位
+
+本文件是 **总览文档**，不是当前 Phase 1 的执行真相。
+
+它负责：
+
+- 解释协作模型
+- 给出各 workflow 的阅读分流
+- 概括当前固定主链路
+
+它不负责：
+
+- 重定义状态机
+- 重定义 action
+- 替代 `workflows/playbooks/*.md`
+- 替代 `roles/playbooks/*.md`
+
+真正执行时，以：
+
+- `product/task-status-guards.md`
+- `product/task-transition-api-and-actions.md`
+- 对应 `workflows/playbooks/*.md`
+- 对应 `roles/playbooks/*.md`
+
+为准。
+
+---
+
+## 当前 Phase 1 协作原则
+
 - 任务必须有状态
-- 任务必须有负责人
-- 每个流转节点必须有输入输出
-- 涉及高风险动作必须设置审批门
-- 允许返工，不强行一次通过
-- 每次交接都要有明确上下文，不允许“断片式流转”
+- 任务必须有当前 owner
+- 正式推进必须通过 action-driven transition
+- 每次交接都必须落下 handoff 记录
+- 审核结论必须落到 `ReviewRecord`
+- 交付前必须形成 `DeliverySummaryRecord`
+- 高风险动作必须进入 `Waiting Decision`
 
 ---
 
-## 基础任务状态
-- `Draft`：草稿，尚未正式进入流程
-- `Queued`：已进入队列，等待分派
-- `In Analysis`：需求分析 / 技术评估中
-- `In Progress`：开发执行中
-- `Review`：待审核
-- `Rework`：被打回返工
-- `Waiting Decision`：等待创业者 / 人工决策
-- `Ready for Delivery`：可交付，等待最终确认
-- `Done`：完成
-- `Archived`：归档
+## 当前固定状态集
+
+- `Draft`
+- `Ready`
+- `In Progress`
+- `Waiting Handoff`
+- `Waiting Decision`
+- `In Review`
+- `Rework Required`
+- `Ready for Delivery`
+- `Done`
+- `Archived`
+- `Cancelled`
 
 ---
 
-## 第一版已覆盖的任务流
-当前研发团队版已经明确三条主流程：
-- `workflows/playbooks/feature-workflow.md`
-  - 用于新增能力、明确范围的功能迭代
-- `workflows/playbooks/bugfix-workflow.md`
-  - 用于常规缺陷修复、回归问题处理
-- `workflows/playbooks/hotfix-workflow.md`
-  - 用于线上紧急止血、需要高时效响应的问题
+## 当前固定动作集
 
-建议判断顺序：
-1. 先判断是不是线上紧急问题
-2. 若是，走 hotfix
-3. 若不是，再区分是 feature 还是 bugfix
-
----
-
-## 第一版标准流转（研发团队）
-### 流程主线
-1. 用户 / CEO 提出业务目标、缺陷问题或紧急异常
-2. PM Agent 或 Tech Lead Agent 先完成问题澄清与归类
-3. Tech Lead Agent 输出技术方案、修复策略或止血路径
-4. Dev Agent 完成实现 / 修复 / 补丁并附自测或验证结果
-5. QA / Review Agent 审核质量、风险与完成度
-6. 若不通过，进入 `Rework`，退回 `Dev Agent`
-7. 若通过但涉及关键动作，进入 `Waiting Decision`
-8. 用户 / CEO 审批后，进入 `Ready for Delivery` 或 `Done`
-9. Ops / Release Agent 负责整理交付信息、记录状态与后续跟踪
+- `ready_task`
+- `start_progress`
+- `submit_handoff`
+- `accept_handoff`
+- `request_decision`
+- `resume_after_decision`
+- `start_review`
+- `reject_to_rework`
+- `restart_rework`
+- `mark_ready_for_delivery`
+- `reopen_from_delivery`
+- `complete_delivery`
+- `archive_task`
+- `cancel_task`
 
 ---
 
-## 流转规则模板
-### 任务创建
-- 触发者：用户 / CEO Agent
-- 必要字段：
-  - 任务名称
-  - 业务目标或问题目标
-  - 背景上下文
-  - 优先级
-  - 截止时间
-  - 预期输出
+## 默认协作结构
 
-### 需求分析 / 问题澄清规则
-- feature 默认先由 PM Agent 做需求澄清
-- bugfix 默认由 PM Agent 或 Tech Lead Agent 补齐复现信息与影响范围
-- hotfix 允许压缩流程，但不能跳过问题确认与风险记录
-- 验收标准或修复完成标准不明确时，必须回到补充定义
+### 1. feature
 
-### 技术评估规则
-- 默认由 Tech Lead Agent 评估实现路径 / 修复路径 / 止血方案
-- 如果是标准化小修改，可允许轻量跳过完整方案，但仍需记录依据
-- 涉及架构变更、数据变更、接口兼容性问题时，必须保留技术评估记录
-- hotfix 中若涉及生产操作、回滚、降级或数据修复，必须进入人工拍板
+典型角色顺序：
 
-### 开发执行规则
-- Dev Agent 必须基于明确任务单执行
-- 产出至少包括：
-  - 实现结果或修复结果
-  - 修改点说明
-  - 自测 / 复现验证 / 回归验证结论
-- 不允许直接以“已完成”代替交付说明
+`pm_agent -> tech_lead_agent -> dev_agent -> qa_review_agent -> ops_release_agent`
 
-### 审核规则
-- QA / Review Agent 审核的核心是：
-  - 是否满足需求或修复目标
-  - 是否符合技术规范
-  - 是否存在明显风险
-- 审核结论只能是：
-  - 通过
-  - 打回返工
-  - 升级人工判断
+### 2. bugfix
 
-### 返工规则
-- 每次返工都必须附带具体问题列表
-- 不允许只说“有点问题，再改改”
-- 超过约定返工次数，自动升级人工判断
+典型角色顺序：
 
-### 升级规则
-以下情况必须进入 `Waiting Decision`：
-- 需求目标冲突
-- 方案风险过高
-- 影响生产环境
-- 涉及删除、付款、对外承诺、正式发布
-- 多个方案都可行但需要业务拍板
-- hotfix 涉及回滚、降级、数据修复或对外口径
+`pm_agent（按需） -> tech_lead_agent -> dev_agent -> qa_review_agent -> ops_release_agent`
+
+### 3. hotfix
+
+典型角色顺序：
+
+`tech_lead_agent -> dev_agent -> qa_review_agent -> ops_release_agent -> approver`
 
 ---
 
-## 第一版闭环示例（研发）
-### 示例 1：新增一个后台功能模块
-- CEO：提出业务目标
-- PM：整理需求，给出验收标准
-- Tech Lead：设计实现方案，标出风险与依赖
-- Dev：完成开发并附自测说明
-- QA / Review：检查需求覆盖、逻辑正确性、规范问题
-- CEO：决定是否上线或继续迭代
-- Ops / Release：整理交付摘要与发布说明
+## 默认主链路摘要
 
-### 示例 2：修复一个常规后台缺陷
-- CEO / 用户：登记问题现象与优先级
-- PM / Tech Lead：补齐复现条件和影响范围
-- Tech Lead：给出修复路径与回归关注点
-- Dev：完成修复并做复现验证 / 回归验证
-- QA / Review：确认问题已修复且未引入明显新风险
-- CEO：决定是否接受当前修复范围
-- Ops / Release：记录修复结果与后续治理建议
+### 标准 feature / bugfix 主链路
 
-### 示例 3：处理一个线上紧急 hotfix
-- CEO / 用户 / Tech Lead：先确认事故级别与影响范围
-- Tech Lead：给出止血方案与风险边界
-- CEO：先拍板是否执行高风险生产动作
-- Dev：快速实施补丁 / 回滚 / 降级
-- QA / Review：做最小关键验证
-- CEO：确认当前 hotfix 是否接受
-- Ops / Release：收口并推动 follow-up 任务
+1. `Draft -> Ready`
+2. `Ready -> In Progress`
+3. `In Progress -> Waiting Handoff -> In Progress`
+4. `In Progress -> In Review`
+5. `In Review -> Rework Required` 或 `Ready for Delivery`
+6. `Ready for Delivery -> Done -> Archived`
+
+### decision 分支
+
+1. `request_decision`
+2. task 进入 `Waiting Decision`
+3. `DecisionRecord` resolve
+4. `resume_after_decision`
+5. 回到 `Ready / In Progress / Cancelled`
+
+---
+
+## 什么时候看哪份 workflow 文档
+
+- 任务类型是 `feature`：看 `workflows/playbooks/feature-workflow.md`
+- 任务类型是 `bugfix`：看 `workflows/playbooks/bugfix-workflow.md`
+- 任务类型是 `hotfix`：看 `workflows/playbooks/hotfix-workflow.md`
+
+---
+
+## 什么时候看哪份 role 文档
+
+- 当前 owner 是 `pm_agent`：看 `roles/playbooks/PM-Agent-playbook.md`
+- 当前 owner 是 `tech_lead_agent`：看 `roles/playbooks/Tech-Lead-Agent-playbook.md`
+- 当前 owner 是 `dev_agent`：看 `roles/playbooks/Dev-Agent-playbook.md`
+- 当前 owner 是 `qa_review_agent`：看 `roles/playbooks/QA-Review-Agent-playbook.md`
+- 当前 owner 是 `ops_release_agent`：看 `roles/playbooks/Ops-Release-Agent-playbook.md`
+
+---
+
+## 当前统一结论
+
+workflow 在当前 Phase 1 中的意义，不是“多一份流程图说明”，而是：
+
+- 用主真相约束推进方式
+- 用 handoff 承接角色切换
+- 用 review / decision / delivery summary 形成闭环
+- 让代理知道现在该做什么、做完产出什么、交给谁、什么时候必须停
