@@ -105,14 +105,13 @@
 | 系统 action | 默认用户可见文案 |
 |---|---|
 | `ready_task` | 标记为可开始 |
-| `start_progress` | 开始执行 |
+| `start_progress` | 开始执行 / 开始返工 |
 | `submit_handoff` | 提交交接 |
 | `accept_handoff` | 接收交接 |
 | `request_decision` | 请求拍板 |
 | `resume_after_decision` | 按拍板结果继续 |
 | `start_review` | 开始审核 |
 | `reject_to_rework` | 驳回返工 |
-| `restart_rework` | 开始返工 |
 | `mark_ready_for_delivery` | 标记可交付 |
 | `reopen_from_delivery` | 重新打开任务 |
 | `complete_delivery` | 完成交付 |

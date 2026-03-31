@@ -103,7 +103,6 @@ AI Company Workflow 要做的，不是一个普通任务管理工具，而是一
 - `resume_after_decision`
 - `start_review`
 - `reject_to_rework`
-- `restart_rework`
 - `mark_ready_for_delivery`
 - `reopen_from_delivery`
 - `complete_delivery`

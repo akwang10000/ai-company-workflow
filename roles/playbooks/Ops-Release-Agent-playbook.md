@@ -60,8 +60,8 @@
 | 动作 | 最低 payload | 必产出 record | owner 条件 |
 |---|---|---|---|
 | `complete_delivery` | `finalResult`, `artifacts[]`, `deliveryNote` | `ExecutionLog` | 进入前应已有 `DeliverySummaryRecord` 与通过审核结论 |
-| `reopen_from_delivery` | `reopenReason`, `returnToRole` | `ExecutionLog` | 当前状态应为 `Ready for Delivery` 或 `Done` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | Ops 可在收口风险不清时发起 |
+| `reopen_from_delivery` | `reason`, `reopenToRole` | `ExecutionLog` | 当前状态必须为 `Ready for Delivery` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | Ops 可在收口风险不清时发起 |
 | `archive_task` | `archiveReason` | `ExecutionLog` | 当前状态必须为 `Done` |
 
 ---

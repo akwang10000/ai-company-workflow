@@ -68,7 +68,7 @@
 |---|---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner = tech_lead_agent` |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` | 当前 owner 必须是 `tech_lead_agent` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | Tech Lead 可主动发起 |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | Tech Lead 可主动发起 |
 
 ### handoff payload 最低要求
 

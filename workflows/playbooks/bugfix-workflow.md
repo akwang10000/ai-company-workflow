@@ -64,9 +64,9 @@
 
 | 动作 | 最低 payload | 必产出 record |
 |---|---|---|
-| `ready_task` | `readinessSummary` | `ExecutionLog` |
-| `start_progress` | `workSummary` | `ExecutionLog` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` |
+| `ready_task` | 无额外必填 payload | `ExecutionLog` |
+| `start_progress` | 无额外必填 payload | `ExecutionLog` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` |
 
 #### 必须补齐
@@ -96,7 +96,7 @@
 | 动作 | 最低 payload | 必产出 record |
 |---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` |
 
 #### 必须补齐
@@ -116,7 +116,7 @@
 
 #### 允许动作
 
-- `restart_rework`
+- `start_progress`
 - `submit_handoff`
 - `request_decision`
 
@@ -124,9 +124,9 @@
 
 | 动作 | 最低 payload | 必产出 record |
 |---|---|---|
-| `restart_rework` | `reworkPlan` | `ExecutionLog` |
+| `start_progress` | 无额外必填 payload | `ExecutionLog` |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` |
 
 #### 必须补齐
 
@@ -158,8 +158,8 @@
 | 动作 | 最低 payload | 必产出 record |
 |---|---|---|
 | `start_review` | `reviewType`, `checklistSummary` | `ReviewRecord(result=pending)`, `ExecutionLog` |
-| `reject_to_rework` | `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` |
-| `mark_ready_for_delivery` | `reviewSummary`, `changeSummary`, `validationSummary`, `remainingRisks`, `deliveryTo[]` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` |
+| `reject_to_rework` | `reviewType`, `checklistSummary`, `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` |
+| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` |
 
 #### 必须补齐
 
@@ -178,9 +178,14 @@
 
 #### 允许动作
 
+当 `status = Ready for Delivery`：
+
 - `complete_delivery`
-- `archive_task`
 - `reopen_from_delivery`
+
+当 `status = Done`：
+
+- `archive_task`
 
 #### 必须补齐
 

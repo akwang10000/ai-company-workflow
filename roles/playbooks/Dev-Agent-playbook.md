@@ -57,7 +57,7 @@
 
 可做：
 
-- `restart_rework`
+- `start_progress`
 - 按返工要求补改后再次 `submit_handoff`
 - `request_decision`
 
@@ -69,8 +69,8 @@
 |---|---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner = dev_agent` |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` | 当前 owner 必须是 `dev_agent` |
-| `restart_rework` | `reworkPlan` | `ExecutionLog` | 当前状态必须为 `Rework Required` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | Dev 可主动发起 |
+| `start_progress` | 无额外必填 payload | `ExecutionLog` | 当前状态必须为 `Rework Required` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | Dev 可主动发起 |
 
 ### handoff payload 最低要求
 

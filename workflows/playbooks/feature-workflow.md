@@ -66,9 +66,9 @@
 
 | 动作 | 最低 payload | 必产出 record | owner 约束 |
 |---|---|---|---|
-| `ready_task` | `readinessSummary` | `ExecutionLog` | 当前 owner 应为创建侧 / PM 侧 |
-| `start_progress` | `workSummary` | `ExecutionLog` | 当前 owner 保持 `pm_agent` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | PM 可发起 |
+| `ready_task` | 无额外必填 payload | `ExecutionLog` | 当前 owner 应为创建侧 / PM 侧 |
+| `start_progress` | 无额外必填 payload | `ExecutionLog` | 当前 owner 保持 `pm_agent` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | PM 可发起 |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` | `toRole = tech_lead_agent` |
 
 #### 必填产物
@@ -99,7 +99,7 @@
 | 动作 | 最低 payload | 必产出 record | owner 约束 |
 |---|---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner` 必须是 `tech_lead_agent` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | Tech Lead 可发起 |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | Tech Lead 可发起 |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` | `toRole = dev_agent` |
 
 #### 必填产物
@@ -124,16 +124,16 @@
 - `accept_handoff`
 - `request_decision`
 - `submit_handoff`
-- `restart_rework`
+- `start_progress`
 
 #### 最低 payload / record 要求
 
 | 动作 | 最低 payload | 必产出 record | owner 约束 |
 |---|---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner = dev_agent` |
-| `restart_rework` | `reworkPlan` | `ExecutionLog` | 当前 owner 应为返工执行人 |
+| `start_progress` | 无额外必填 payload | `ExecutionLog` | 当前 owner 应为返工执行人 |
 | `submit_handoff` | `fromRole`, `toRole`, `handoffSummary`, `deliveredArtifacts[]` | `HandoffRecord`, `ExecutionLog` | `toRole = qa_review_agent` |
-| `request_decision` | `decisionReason`, `options[]`, `recommendedOption` | `DecisionRecord`, `ExecutionLog` | Dev 可发起 |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | Dev 可发起 |
 
 #### 必填产物
 
@@ -167,8 +167,8 @@
 |---|---|---|---|
 | `accept_handoff` | `acceptanceNote` | `ExecutionLog` | `nextOwner = qa_review_agent` |
 | `start_review` | `reviewType`, `checklistSummary` | `ReviewRecord(result=pending)`, `ExecutionLog` | 当前 owner 必须已是审核侧 |
-| `reject_to_rework` | `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` | 当前状态必须为 `In Review` |
-| `mark_ready_for_delivery` | `reviewSummary`, `changeSummary`, `validationSummary`, `remainingRisks`, `deliveryTo[]` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` | 当前状态必须为 `In Review` |
+| `reject_to_rework` | `reviewType`, `checklistSummary`, `issuesFound[]`, `nextAction`, `returnToRole` | `ReviewRecord(result=rejected)`, `ExecutionLog` | 当前状态必须为 `In Review` |
+| `mark_ready_for_delivery` | `changeSummary`, `affectedScope`, `validationSummary`, `remainingRisks` | `ReviewRecord(result=passed)`, `DeliverySummaryRecord`, `ExecutionLog` | 当前状态必须为 `In Review` |
 
 #### 必填产物
 
@@ -188,10 +188,15 @@
 
 #### 允许动作
 
+当 `status = Ready for Delivery`：
+
 - `complete_delivery`
-- `archive_task`
 - `reopen_from_delivery`
 - `request_decision`
+
+当 `status = Done`：
+
+- `archive_task`
 
 #### 最低 payload / record 要求
 
@@ -199,7 +204,7 @@
 |---|---|---|---|
 | `complete_delivery` | `finalResult`, `artifacts[]`, `deliveryNote` | `ExecutionLog` | 进入前应已有 `DeliverySummaryRecord` |
 | `archive_task` | `archiveReason` | `ExecutionLog` | 当前状态必须为 `Done` |
-| `reopen_from_delivery` | `reopenReason`, `returnToRole` | `ExecutionLog` | 当前状态应为 `Ready for Delivery` 或 `Done` |
+| `reopen_from_delivery` | `reason`, `reopenToRole` | `ExecutionLog` | 当前状态必须为 `Ready for Delivery` |
 
 #### 必填产物
 

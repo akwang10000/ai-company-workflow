@@ -77,7 +77,6 @@
 - `resume_after_decision`
 - `start_review`
 - `reject_to_rework`
-- `restart_rework`
 - `mark_ready_for_delivery`
 - `reopen_from_delivery`
 - `complete_delivery`
