@@ -53,16 +53,28 @@
   - 统一首个主链路动作名为 `ready_task`
   - 清理补充文档中的旧状态名 `Review / Rework / In Analysis / Queued`
   - 将 workflow / role 文档继续补到 action / payload / record / owner 条件可直接消费的粒度
+  - canonical spec 新增 `handoffAcceptance` payload、`comment` 通用规则、Payload 编号顺延
+  - `deliveryTo[]` 类型收死：canonical spec / domain model / workflow playbook 全部对齐为数组
+  - 3 个 workflow playbook 交付阶段补齐 `request_decision` 允许动作与表格行
+  - api-contracts 补 `comment` 通用字段说明、`deliveryTo` 必含说明
+  - screens-and-flows 补结构化字段优先采集 UI 规则
+  - IMPLEMENTATION-PROGRESS 新增 Current Working Slice / Files In Flight 段落
 - 最近一次验证：
   - 主入口文档与补充文档的动作名、状态名、阅读入口已对齐到同一套 Phase 1 口径
+  - deliveryTo 类型、accept_handoff payload、comment 规则、交付阶段 request_decision 已跟 canonical spec 对齐
 - 对应 changed files：
   - `README.md`
   - `docs-map.md`
   - `product/screens-and-flows.md`
   - `product/canvas-ui-spec.md`
+  - `product/task-transition-api-and-actions.md`
+  - `product/api-contracts.md`
+  - `product/domain-model.md`
   - `workflows/workflow.md`
+  - `workflows/playbooks/feature-workflow.md`
+  - `workflows/playbooks/bugfix-workflow.md`
+  - `workflows/playbooks/hotfix-workflow.md`
   - `examples/tasks/*.md`
-  - `workflows/playbooks/*.md`
   - `roles/playbooks/Tech-Lead-Agent-playbook.md`
   - `roles/playbooks/Dev-Agent-playbook.md`
   - `roles/playbooks/Ops-Release-Agent-playbook.md`
@@ -73,13 +85,11 @@
 ## In Progress
 
 - 当前正在做：
-  - 准备进入真实实现验证前的最终文档对齐
+  - P0.3 文档收口与一致性对齐已完成，准备进入真实实现验证
 - 当前目标：
   - 让代理在不重新猜系统的前提下，按统一阅读入口直接开工
 - 当前涉及文件：
-  - 主入口真相层文档
-  - workflow / role 执行手册
-  - 页面与画布补充说明文档
+  - 无（本轮文档对齐已完成）
 
 ---
 
@@ -109,17 +119,17 @@
 
 ## Current Working Slice
 
-- 当前正在验证的链路：
-- 当前实施任务 / 子任务：
-- 当前负责角色：
-- 当前目标结果：
+- 当前正在验证的链路：无（待进入实现验证阶段）
+- 当前实施任务 / 子任务：无
+- 当前负责角色：无
+- 当前目标结果：无
 
 ---
 
 ## Files In Flight
 
-- 本轮正在改的文件：
-- 已改未验证：
+- 本轮正在改的文件：无
+- 已改未验证：无
 
 建议优先验证的验收链路：
 

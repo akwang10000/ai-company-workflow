@@ -256,11 +256,11 @@
 - `affectedScope`
 - `validationSummary`
 - `remainingRisks`
-- `deliveryTo`
+- `deliveryTo[]`
 
 #### rules
 
-- `deliveryTo` 不可为空
+- `deliveryTo` 为数组，不可为空数组
 - `deliveryTo` 表示当前任务进入交付确认时的明确交付对象 / 最终确认方
 - `mark_ready_for_delivery` 成功时，服务端基于该 payload 创建 `DeliverySummaryRecord`
 

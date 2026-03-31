@@ -207,7 +207,7 @@
 - `affectedScope`
 - `validationSummary`
 - `remainingRisks`
-- `deliveryTo`
+- `deliveryTo[]`
 
 ### 12. `ExecutionLog`
 

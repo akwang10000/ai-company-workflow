@@ -205,6 +205,7 @@
 | `complete_delivery` | `finalResult`, `artifacts[]`, `deliveryNote` | `ExecutionLog` | 进入前应已有 `DeliverySummaryRecord` |
 | `archive_task` | `archiveReason` | `ExecutionLog` | 当前状态必须为 `Done` |
 | `reopen_from_delivery` | `reason`, `reopenToRole` | `ExecutionLog` | 当前状态必须为 `Ready for Delivery` |
+| `request_decision` | `reason`, `options[]`, `recommendedOption`, `approver` | `DecisionRecord`, `ExecutionLog` | 当前状态必须为 `Ready for Delivery` |
 
 #### 必填产物
 

@@ -182,6 +182,7 @@
 
 - `complete_delivery`
 - `reopen_from_delivery`
+- `request_decision`
 
 当 `status = Done`：
 
