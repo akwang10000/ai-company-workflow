@@ -46,6 +46,13 @@
 
 生产契约中，actor 身份应来自服务端认证上下文。
 
+#### 最小落地建议（Phase 1）
+
+- 前端不上传 `actorRoleKey`、`currentOwner` 一类可被伪造的身份字段作为授权依据
+- 服务端应先解析 `currentUser`，再按 `workspaceId` 解析其 `WorkspaceMember` 与 `RoleAssignment`
+- action 授权先按角色权限矩阵判断，再叠加当前状态、当前 owner、`nextOwner` 等 guard
+- `approve / reject decision` 必须额外校验当前用户是否匹配 `DecisionRecord.approver` 或其等价映射身份
+
 ### 4. owner 变化属于 transition side effect
 
 - 普通 `PATCH /api/tasks/{taskId}` 不负责改 `currentOwner`

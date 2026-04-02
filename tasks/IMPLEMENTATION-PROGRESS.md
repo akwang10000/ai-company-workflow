@@ -59,6 +59,7 @@
   - api-contracts 补 `comment` 通用字段说明、`deliveryTo` 必含说明
   - screens-and-flows 补结构化字段优先采集 UI 规则
   - IMPLEMENTATION-PROGRESS 新增 Current Working Slice / Files In Flight 段落
+  - 补充 transition 文档中的最小 actor 解析口径，并回收 domain-model 中会扩散主真相边界的身份实现建议
 - 最近一次验证：
   - 主入口文档与补充文档的动作名、状态名、阅读入口已对齐到同一套 Phase 1 口径
   - deliveryTo 类型、accept_handoff payload、comment 规则、交付阶段 request_decision 已跟 canonical spec 对齐
